@@ -1,6 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
-using projektlabor.noah.planmeldung.database;
-using projektlabor.noah.planmeldung.database.entities;
+using projektlabor.noah.planmeldung.datahandling;
+using projektlabor.noah.planmeldung.datahandling.entities;
 using projektlabor.noah.planmeldung.Properties.langs;
 using System;
 using System.Threading;
@@ -16,12 +16,12 @@ namespace projektlabor.noah.planmeldung.windows
         /// <summary>
         /// Holds the currently selected user
         /// </summary>
-        private UserEntity selectedLoginUser;
+        private SimpleUserEntity selectedLoginUser;
 
         /// <summary>
         /// Holds the currently selected timespan
         /// </summary>
-        private TimeSpentEntity selectedLoginTime;
+        private TimespentEntity selectedLoginTime;
 
         /// <summary>
         /// Holds all form field elements that are used at the login form.
@@ -54,11 +54,12 @@ namespace projektlabor.noah.planmeldung.windows
         /// Executes when the user selects another user with the login form
         /// </summary>
         /// <param name="user">The selected user</param>
-        private void OnLoginUserSelectSelect(UserEntity user) => Task.Run(() =>
+        private void OnLoginUserSelectSelect(SimpleUserEntity user) => Task.Run(() =>
         {
             // Displays the loading
             this.DisplayLoading(Lang.main_login_select_loading);
-            try
+            // TODO: send login request
+            /*try
             {
                 // Gets the remaining data
                 var ts = Database.Instance.GetOpenTimeSpentFromUser(user.Id);
@@ -66,7 +67,7 @@ namespace projektlabor.noah.planmeldung.windows
                 // Checks if no unclosed sessions have been found
                 if (ts == null)
                     // Creates a new login
-                    ts = new TimeSpentEntity()
+                    ts = new TimespentEntity()
                     {
                         Start = DateTime.Now
                     };
@@ -101,7 +102,7 @@ namespace projektlabor.noah.planmeldung.windows
             {
                 // Displays the error
                 this.DisplayFatalError();
-            }
+            }*/
         });
 
         /// <summary>
@@ -111,7 +112,8 @@ namespace projektlabor.noah.planmeldung.windows
         {
             // Displays the loading animation
             this.DisplayLoading(Lang.main_login_loading);
-            try
+            // TODO: send login request
+            /*try
             {
                 //Log the user in
                 Database.Instance.LoginUser(this.selectedLoginUser, this.selectedLoginTime);
@@ -138,7 +140,7 @@ namespace projektlabor.noah.planmeldung.windows
             {
                 // Displays the error
                 this.DisplayFatalError();
-            }
+            }*/
         });
 
         /// <summary>
@@ -148,7 +150,8 @@ namespace projektlabor.noah.planmeldung.windows
         {
             // Displays the loading animation
             this.DisplayLoading(Lang.main_login_loading_logout);
-            try
+            // TODO: send logout request
+            /*try
             {
                 //Log the user out
                 Database.Instance.LogoutUser(this.selectedLoginTime);
@@ -174,7 +177,7 @@ namespace projektlabor.noah.planmeldung.windows
             {
                 // Displays the error
                 this.DisplayFatalError();
-            }
+            }*/
         });
 
         /// <summary>
@@ -195,10 +198,10 @@ namespace projektlabor.noah.planmeldung.windows
             // Tries to get a user by it's rfid
             Task.Run(() =>
             {
-                try
+                /*try
                 {
                     // Tries to find a user
-                    Tuple<UserEntity, TimeSpentEntity> fetchedUser = Database.Instance.GetUserByRFIDCode(rfid);
+                    Tuple<SimpleUserEntity, TimespentEntity> fetchedUser = Database.Instance.GetUserByRFIDCode(rfid);
 
                     // Gets the values
                     var user = fetchedUser.Item1;
@@ -224,7 +227,7 @@ namespace projektlabor.noah.planmeldung.windows
                     if (isLogin)
                     {
                         // Creates a new time
-                        time = new TimeSpentEntity
+                        time = new TimespentEntity
                         {
                             Start = DateTime.Now
                         };
@@ -261,7 +264,8 @@ namespace projektlabor.noah.planmeldung.windows
                 {
                     // Displays the error
                     this.DisplayFatalError();
-                }
+                }*/
+                // TODO: send login request
             });
         }
 
@@ -293,7 +297,7 @@ namespace projektlabor.noah.planmeldung.windows
         /// </summary>
         /// <param name="user">The user that should be displayed</param>
         /// <param name="spenttime">The time span entity that should be used</param>
-        private void LoginDisplayUser(UserEntity user, TimeSpentEntity spenttime)
+        private void LoginDisplayUser(SimpleUserEntity user, TimespentEntity spenttime)
         {
             // Sets the selected user and spenttime
             this.selectedLoginUser = user;

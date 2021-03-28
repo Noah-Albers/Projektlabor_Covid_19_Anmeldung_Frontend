@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Windows;
-using System.Xml.Serialization;
+﻿using System.Windows;
 
 namespace projektlabor.noah.planmeldung
 {

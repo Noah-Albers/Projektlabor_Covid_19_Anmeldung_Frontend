@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using projektlabor.noah.planmeldung.database.entities;
-using projektlabor.noah.planmeldung.database;
+using projektlabor.noah.planmeldung.datahandling.entities;
+using projektlabor.noah.planmeldung.datahandling;
 
 namespace projektlabor.noah.planmeldung.windows.mainWindow
 {
@@ -23,7 +23,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
         /// <summary>
         /// Event handler that executes when the a user got selected
         /// </summary>
-        public Action<UserEntity> OnSelect { get; set; }
+        public Action<SimpleUserEntity> OnSelect { get; set; }
         
         /// <summary>
         /// Holds the current running task of fetching users from the database.
@@ -57,7 +57,9 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
             // Starts the task
             this.taskFetching = Task.Run(() =>
             {
-                try
+                // TODO: send user get request
+
+                /*try
                 {
                     // Gets the users
                     var users = Database.Instance.GetUsers();
@@ -102,7 +104,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
                         // Executes the error handler
                         this.OnError(ex);
                     });
-                }
+                }*/
 
                 // Resets the task
                 this.taskFetching = null;
@@ -123,7 +125,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
 
             // Gets the selected user
             // Updates the selected user
-            UserEntity user = (this.List.SelectedItem as ListViewItem).Content as UserEntity;
+            SimpleUserEntity user = (this.List.SelectedItem as ListViewItem).Content as SimpleUserEntity;
 
             // Executes the handler
             this.OnSelect(user);
@@ -142,7 +144,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
 
                 // Checks if the user matches
                 // Shows or hides the user
-                itm.Visibility = (itm.Content as UserEntity).isMatching(this.FieldSearch.Text) ? Visibility.Visible : Visibility.Collapsed;
+                itm.Visibility = (itm.Content as SimpleUserEntity).isMatching(this.FieldSearch.Text) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using projektlabor.noah.planmeldung.database.entities;
+﻿using projektlabor.noah.planmeldung.datahandling.entities;
 using projektlabor.noah.planmeldung.uiElements;
 using System.Linq;
 using System.Windows;
@@ -28,11 +28,11 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
         /// <summary>
         /// All field value using the extended user entity
         /// </summary>
-        public ExtendedUserEntity UserInput
+        public UserEntity UserInput
         {
             get
             {
-                return new ExtendedUserEntity
+                return new UserEntity
                 {
                     AutoDeleteAccount = this.DataAutoDeleteAccount,
                     Email = this.DataEmail,
@@ -40,10 +40,10 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
                     Lastname=this.DataLastname,
                     TelephoneNumber=this.DataTelephone,
                     Location=this.DataLocation,
-                    PLZ = this.DataPlz.Length > 0 ? int.Parse(this.DataPlz) : null as int?,
+                    PLZ = this.DataPlz.Length > 0 ? int.Parse(this.DataPlz) : -1,
                     StreetNumber = this.DataStreetnumber,
                     Street=this.DataStreet,
-                    RFID=this.DataRFID
+                    Rfid=this.DataRFID
                 };
             }
             set
@@ -57,7 +57,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
                 this.DataPlz = value.PLZ.ToString();
                 this.DataStreetnumber = value.StreetNumber;
                 this.DataStreet = value.Street;
-                this.DataRFID = value.RFID;
+                this.DataRFID = value.Rfid;
             }
         }
 

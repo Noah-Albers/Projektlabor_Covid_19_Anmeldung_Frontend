@@ -1,7 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using projektlabor.noah.planmeldung.Properties.langs;
-using projektlabor.noah.planmeldung.database;
-using projektlabor.noah.planmeldung.database.entities;
+﻿using projektlabor.noah.planmeldung.Properties.langs;
 using projektlabor.noah.planmeldung.utils;
 using System;
 using System.Threading.Tasks;
@@ -43,9 +40,6 @@ namespace projektlabor.noah.planmeldung.windows
 
             // Gets the login group
             this.loginFieldGroup = new TextBox[] { this.FieldStart, this.FieldEnd, this.FieldFirstname,this.FieldLastname };
-
-            // Connects to the database using a new thread
-            this.LoginToDatabase();
         }
 
         #region Event-handlers
@@ -56,31 +50,21 @@ namespace projektlabor.noah.planmeldung.windows
         /// <param name="rfid">The received rfid</param>
         private void OnRFIDReceiv(string rfid) => this.Dispatcher.Invoke(() =>
         {
-            // Gets which interfaces are visible
+            // If the overlay is visible
             bool over = this.Overlay.Visibility.Equals(Visibility.Visible);
-            bool adm = this.OverlayAdminPanel.Visibility.Equals(Visibility.Visible);
 
-            // Checks if an overlay is displayed and its not the admin panel
-            if (over && !adm)
+            // Checks if the overlay is displayed
+            if (over)
                 return;
 
             // Checks if the register form handles the rfid
             if (this.FormRegister.OnRFIDReceive(rfid))
                 return;
 
-            // Checks if the admin panels edit form handles the rfid
-            if (this.FormEditProfile.OnRFIDReceive(rfid))
-                return;
-
             // Shows the loading window
             this.DisplayLoading(Lang.main_rfid_loading);
 
-            // Checks if the user should be grabbed for the admin or login interface
-            if (adm)
-                this.AdminPanelSelectUserByRFID(rfid);
-            else
-                this.LoginUserFromRFID(rfid);
-
+            // TODO: Start login process
         });
 
         /// <summary>
@@ -182,64 +166,6 @@ namespace projektlabor.noah.planmeldung.windows
                 }, this.OnRFIDReceiv);
             });
         }
-
-        /// <summary>
-        /// Tries to log the program into the database.
-        /// It will start all the visual effects for that.
-        /// Once the login was successful, the onContinue method will be called.
-        /// </summary>
-        /// <param name="onContinue">Method to call when the login has successfully been done.</param>
-        private void LoginToDatabase()
-        {
-            // Starts the loading animation
-            this.Dispatcher.Invoke(() => this.DisplayLoading(Lang.main_database_connecting));
-
-            // Starts a new thread to prevent blocking the wpf thread
-            Task.Run(() =>
-            {
-                try
-                {
-                    // Connects to the database
-                    new Database();
-
-                    // Closes the loading
-                    this.Dispatcher.Invoke(() => this.CloseOverlay());
-
-                    this.backupTask = new BackupTask(
-                        () => this.Dispatcher.Invoke(this.IsWindowReadyForBackup),
-                        info => this.Dispatcher.Invoke(()=>this.OnBackupInfo(info)),
-                        () => this.Dispatcher.Invoke(this.OnBackupEnd),
-                        err => this.Dispatcher.Invoke(() => this.OnBackupError(err))
-                    );
-
-                    // Starts the background-handler
-                    Task.Run(this.backupTask.Start);
-                }
-                catch (MySqlException e)
-                {
-                    // Defines if the error happend because of wrong credentials or because of a failed connection
-                    bool wrongCredentials = e.Number == 0;
-
-                    // Displays the error
-                    this.DisplayInfo(
-                        wrongCredentials?
-                            Lang.main_database_error_credentials_title :
-                            Lang.main_database_error_connect_title,
-                        wrongCredentials?
-                            Lang.main_database_error_credentials_text :
-                            Lang.main_database_error_connect_text,
-                        this.LoginToDatabase,
-                        Lang.main_popup_retrie
-                    );
-                }
-                // Catches any fatal exception
-                catch
-                {
-                    // Displays the error
-                    this.DisplayFatalError();
-                }
-            });
-        }
         
         /// <summary>
         /// Displays the fatal error message to the user
@@ -312,9 +238,7 @@ namespace projektlabor.noah.planmeldung.windows
 
             // Hides the single parts
             this.OverlayInfo.Visibility =
-            this.OverlayLoading.Visibility =
-            this.OverlayAdminPanelLogin.Visibility =
-            this.OverlayAdminPanel.Visibility = Visibility.Collapsed;
+            this.OverlayLoading.Visibility = Visibility.Collapsed;
         });
 
         #endregion

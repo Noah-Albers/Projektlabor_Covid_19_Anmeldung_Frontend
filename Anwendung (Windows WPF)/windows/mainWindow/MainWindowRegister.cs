@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using projektlabor.noah.planmeldung.database;
+using projektlabor.noah.planmeldung.datahandling;
 using projektlabor.noah.planmeldung.Properties.langs;
 using MySql.Data.MySqlClient;
 
@@ -33,57 +33,7 @@ namespace projektlabor.noah.planmeldung.windows
             // Gets the inserted user
             var user = this.FormRegister.UserInput;
             
-            Task.Run(() =>
-            {
-                try
-                {
-                    // Tries to register the user
-                    int status = Database.Instance.RegisterUser(user);
-                    
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        // Checks if the register was successful
-                        if (status != 0)
-                            this.DisplayInfo(
-                                Lang.main_register_error_title,
-                                status==1?Lang.main_register_error_name : Lang.main_register_error_rfid,
-                                this.CloseOverlay,
-                                Lang.main_popup_close
-                            );
-                        else
-                        {
-                            // Resets the form
-                            this.FormRegister.ResetForm();
-                            this.CheckboxRegAcceptRules.IsChecked = false;
-                            this.ButtonRegisterRegister.IsEnabled = false;
-                            // Displays the info
-                            this.DisplayInfo(
-                                Lang.main_register_success_title,
-                                Lang.main_register_success_text,
-                                this.CloseOverlay,
-                                Lang.main_popup_close,
-                                false
-                            );
-                        }
-                    });
-
-                }
-                catch (MySqlException)
-                {
-                    // Displays the error
-                    this.DisplayInfo(
-                        Lang.main_database_error_connect_title,
-                        Lang.main_database_error_connect_user_text,
-                        this.CloseOverlay,
-                        Lang.main_popup_close
-                    );
-                }
-                catch
-                {
-                    // Displays the error
-                    this.DisplayFatalError();
-                }
-            });
+            // TODO: Restart register user request
         }
 
         /// <summary>
