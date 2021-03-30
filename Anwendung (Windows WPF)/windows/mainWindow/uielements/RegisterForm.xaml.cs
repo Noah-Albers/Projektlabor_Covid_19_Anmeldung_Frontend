@@ -23,7 +23,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
         public string DataTelephone { get => this.FieldTelephone.Text; set => this.FieldTelephone.Text = value; }
         public string DataEmail { get => this.FieldEmail.Text; set => this.FieldEmail.Text = value; }
         public string DataRFID { get => this.FieldRFID.Text; set => this.FieldRFID.Text = value; }
-        public bool DataAutoDeleteAccount { get => this.CheckboxRegDelAccount.IsChecked.Value; set => this.CheckboxRegDelAccount.IsChecked = value; }
+        public bool? DataAutoDeleteAccount { get => this.CheckboxRegDelAccount.IsChecked.Value; set => this.CheckboxRegDelAccount.IsChecked = value; }
 
         /// <summary>
         /// All field value using the extended user entity
@@ -38,9 +38,9 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
                     Email = this.DataEmail,
                     Firstname = this.DataFirstname,
                     Lastname=this.DataLastname,
-                    TelephoneNumber=this.DataTelephone,
+                    TelephoneNumber= this.DataTelephone,
                     Location=this.DataLocation,
-                    PLZ = this.DataPlz.Length > 0 ? int.Parse(this.DataPlz) : -1,
+                    PLZ = this.DataPlz.Length > 0 ? (int?)int.Parse(this.DataPlz) : null,
                     StreetNumber = this.DataStreetnumber,
                     Street=this.DataStreet,
                     Rfid=this.DataRFID

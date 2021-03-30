@@ -16,32 +16,66 @@ namespace Pl_Covid_19_Anmeldung.datahandling.entities
         /// </summary>
         protected abstract Dictionary<string, FieldInfo> Entrys();
 
+        /// <summary>
+        /// Tries to load the values of this object (that have been marked properly) from the given json supplier.
+        /// </summary>
+        /// <param name="supplier">The json-object that holds the values</param>
+        /// <param name="required">All values that are required to load from the object</param>
+        /// <param name="optional">All values that are optionally loaded from the object</param>
+        /// <exception cref="RequiredEntitySerializeException">If any required field is not present</exception>
+        /// <exception cref="EntitySerializeException">If anything went wrong while loading</exception>
         public void Load(JObject supplier, string[] required, params string[] optional) =>
-        this.ExecuteActionForRequiredAndOptional((field, name) =>
+        this.ExecuteActionForRequiredAndOptional((field, name, isRequired) =>
         {
             try
             {
+                // Loads the object
+                JToken obj = supplier[name];
+
+                // Checks if the value is given
+                if (obj == null)
+                    // Returns null if the field is not required; otherwise an exception
+                    return isRequired ? new RequiredEntitySerializeException(name) : null;
+
                 // Tries to load the value for the field and set it
-                field.SetValue(this, supplier[name].ToObject(field.FieldType));
+                field.SetValue(this, obj.ToObject(field.FieldType));
             }
             catch
             {
-                return new EntityLoadException(name);
+                // Failed to load some field
+                return new EntitySerializeException(name);
             }
             return null;
         }, required, optional);
 
+        /// <summary>
+        /// Tries to save all entrys from this object (That have been marked properly) to the given supplier.
+        /// </summary>
+        /// <param name="supplier">The object that will hold all those objects</param>
+        /// <param name="required">All values that must be saved from the entity</param>
+        /// <param name="optional">All values that are optional and can be left out while saving</param>
+        /// <exception cref="RequiredEntitySerializeException">If any required field is not present</exception>
+        /// <exception cref="EntitySerializeException">If anything went wrong while saving.</exception>
         public void Save(JObject supplier, string[] required, params string[] optional) =>
-        this.ExecuteActionForRequiredAndOptional((field, name) =>
+        this.ExecuteActionForRequiredAndOptional((field, name, isRequired) =>
         {
             try
             {
-                // Tries to load the value from the field and set it
-                supplier[name] = JToken.FromObject(field.GetValue(this));
+                // Gets the value
+                object value = field.GetValue(this);
+
+                // Checks if the value is not given
+                if(value == null)
+                    // Returns null if the field is not required; otherwise an exception
+                    return isRequired ? new RequiredEntitySerializeException(name) : null;
+
+                // Sets the value
+                supplier[name] = JToken.FromObject(value);
             }
             catch
             {
-                return new EntitySaveException(name);
+                // Failes to load a field or save it for some reason
+                return new EntitySerializeException(name);
             }
             return null;
         }, required, optional);
@@ -54,30 +88,31 @@ namespace Pl_Covid_19_Anmeldung.datahandling.entities
         /// <param name="required">All elements that are required to succed</param>
         /// <param name="optional">All elements that are optional to succed</param>
         /// <exception cref="Exception">Can throw any exception that will be returned by the supplier. Throws if any required action failes</exception>
-        private void ExecuteActionForRequiredAndOptional(Func<FieldInfo, string, Exception> supplier, string[] required, params string[] optional)
+        private void ExecuteActionForRequiredAndOptional(Func<FieldInfo, string, bool, Exception> supplier, string[] required, params string[] optional)
         {
             // Gets the entrys
             var entrys = this.Entrys();
 
-            // Iterates over all values that should be saved
-            foreach (string name in required)
+            // Iterates over all values
+            for(int i=0;i<required.Length + optional.Length; i++)
             {
+                // If the field is required
+                bool isRequired = i < required.Length;
+
+                // Gets the name
+                string name = isRequired ? required[i] : optional[i - required.Length];
+
                 // Gets the entry
                 FieldInfo field = entrys[name];
 
                 // Executes the callback to execute some action
-                var exc = supplier(field, name);
+                var exc = supplier(field, name, isRequired);
 
                 // Checks if the action failed
                 if (exc != null)
                     // Throws the exception
                     throw exc;
             }
-
-            // Iterates over all optional values
-            foreach (string name in optional)
-                // Executes the callback to execute some action but ignores any errors
-                supplier(entrys[name], name);
         }
 
         /// <summary>

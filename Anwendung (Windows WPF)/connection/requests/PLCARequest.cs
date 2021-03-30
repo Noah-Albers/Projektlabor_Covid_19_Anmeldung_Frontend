@@ -5,7 +5,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Pl_Covid_19_Anmeldung.connection.requests
 {
@@ -17,6 +16,10 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         public Action onErrorIO;
         // Executer when an unknow error occurres
         public Action onUnknownError;
+        // Executer when a auth error occurres
+        public Action onAuthError;
+        // Executer when the server returns that the handler wasn't found (May server and client have a different version?)
+        public Action onHandlerError;
 
         /// <summary>
         /// The endpoint id at the server. Can be seen like a path in http
@@ -30,9 +33,21 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="exc">The except-error-string to determin what kind of except-error occurred</param>
         /// <returns>The json-object that can be forwarded as a response from the server. Otherwise just throw an error</returns>
         /// <exception cref="Exception">Can throw an exception if no special handling for the error is required</exception>
-        protected JObject HandleFatalError(string exc)
+        protected void HandleFatalError(string exc)
         {
-            throw new IOException();
+            // Checks the returned error
+            switch (exc)
+            {
+                case "auth":
+                    this.onAuthError?.Invoke();
+                    break;
+                case "handler":
+                    this.onHandlerError?.Invoke();
+                    break;
+                default:
+                    this.onUnknownError?.Invoke();
+                    break;
+            }
         }
 
         /// <summary>
@@ -43,8 +58,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="port">Port on which the server is running</param>
         /// <param name="privateKey">The current provided private key</param>
         /// <param name="requestData">The request object that defines any special data that might be required to fullfil the request.</param>
-        /// <param name="onReceive">The callback to handle data if it got received successfully</param>
-        protected void DoRequest(string host, int port, RSAParameters privateKey, JObject requestData,Action<JObject> onReceive)
+        /// <param name="onReceive">The callback to handle data if it got received successfully. The callback can throw an error. It will be catched and the unknown error callback will be executed</param>
+        /// <param name="onError">The callback to handle any error that might have been returned by the remote handler. Exceptions that will be thrown will be handled as unknown error, same as the receive.</param>
+        protected void DoRequest(string host, int port, RSAParameters privateKey, JObject requestData,Action<JObject> onReceive,Action<string,JObject> onError = null)
         {
             try
             {
@@ -64,12 +80,32 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                     // Waits for the response
                     JObject resp = JObject.Parse(Encoding.UTF8.GetString(socket.ReceivePacket()));
 
-                    onReceive(
-                        // Checks for a fatal exception
-                        resp.ContainsKey("except") ?
-                        // Handles the error
-                        this.HandleFatalError((string)resp["except"]) :
-                        // Gets the actual response from the handler
+                    // Checks if an except occurred
+                    if (resp.ContainsKey("except"))
+                    {
+                        // Handles the fatal error
+                        this.HandleFatalError((string)resp["except"]);
+                        return;
+                    }
+                    
+                    // Checks the status
+                    if ((int)resp["status"] != 1)
+                    {
+                        // Checks that the errorcode got passed
+                        if (!resp.ContainsKey("errorcode"))
+                            throw new Exception("Received invalid response");
+
+                        // Handles the error (data is nullable)
+                        onError?.Invoke((string)resp["errorcode"], (JObject)resp["data"]);
+                        return;
+                    }
+
+                    // Checks that the data got passed
+                    if (!resp.ContainsKey("data"))
+                        throw new Exception("Received invalid response");
+
+                    // Gets the actual response from the handler
+                    onReceive?.Invoke(
                         (JObject)resp["data"]
                     );
                 }
@@ -90,7 +126,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                     // Unknown error
                     this.onUnknownError?.Invoke();
                 Console.WriteLine(e.StackTrace);
-            }
+            }/**/
         }
     }
 }

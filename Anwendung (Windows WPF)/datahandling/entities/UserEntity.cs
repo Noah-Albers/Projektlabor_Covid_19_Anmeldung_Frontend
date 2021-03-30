@@ -1,4 +1,5 @@
 ﻿using Pl_Covid_19_Anmeldung.datahandling;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +28,7 @@ namespace projektlabor.noah.planmeldung.datahandling.entities
         [EntityInfo(LOCATION)]
         public string Location;
         [EntityInfo(POSTAL_CODE)]
-        public int PLZ;
+        public int? PLZ;
         [EntityInfo(STREET)]
         public string Street;
         [EntityInfo(HOUSE_NUMBER)]
@@ -38,8 +39,10 @@ namespace projektlabor.noah.planmeldung.datahandling.entities
         public string Email;
         [EntityInfo(RFID)]
         public string Rfid;
+        [EntityInfo(AUTODELETE)]
+        public bool? AutoDeleteAccount;
         [EntityInfo(REGISTER_DATE)]
-        public bool AutoDeleteAccount;
+        public DateTime RegisterDate;
 
         protected override Dictionary<string, FieldInfo> Entrys()
         {
