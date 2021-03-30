@@ -128,12 +128,12 @@
     </ApplicationDefinition>
     <Compile Include="connection\exceptions\HandshakeException.cs" />
     <Compile Include="connection\PLCASocket.cs" />
-    <Compile Include="connection\requests\RegisterUserRequest.cs" />
-    <Compile Include="connection\requests\LogoutRequest.cs" />
-    <Compile Include="connection\requests\LoginRequest.cs" />
     <Compile Include="connection\requests\GetStatusRequest.cs" />
     <Compile Include="connection\requests\GrabUserRequest.cs" />
+    <Compile Include="connection\requests\LoginRequest.cs" />
+    <Compile Include="connection\requests\LogoutRequest.cs" />
     <Compile Include="connection\requests\PLCARequest.cs" />
+    <Compile Include="connection\requests\RegisterUserRequest.cs" />
     <Compile Include="datahandling\entities\Entity.cs" />
     <Compile Include="datahandling\entities\UserEntity.cs" />
     <Compile Include="datahandling\EntityInfoAttribute.cs" />
