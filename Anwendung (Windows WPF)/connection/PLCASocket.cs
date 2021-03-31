@@ -1,4 +1,5 @@
 ﻿using Pl_Covid_19_Anmeldung.connection.exceptions;
+using Pl_Covid_19_Anmeldung.security;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -109,83 +110,6 @@ namespace Pl_Covid_19_Anmeldung.connection
         }
 
         /// <summary>
-        /// Uses AES-CBC with padding to decrypt the given data using the aes key and iv from the class
-        /// </summary>
-        /// <param name="data">The encrypted data</param>
-        /// <returns>If the decryption failes, null; otherwise the decrypted data</returns>
-        private byte[] Decrypt(byte[] data)
-        {
-            try
-            {
-                RijndaelManaged SymmetricKey = new RijndaelManaged
-                {
-                    Mode = CipherMode.CBC
-                };
-                byte[] PlainTextBytes = new byte[data.Length];
-                int ByteCount = 0;
-                using (ICryptoTransform Decryptor = SymmetricKey.CreateDecryptor(this.aesKey, this.aesIv))
-                {
-                    using (MemoryStream MemStream = new MemoryStream(data))
-                    {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read))
-                        {
-
-                            ByteCount = CryptoStream.Read(PlainTextBytes, 0, PlainTextBytes.Length);
-                            MemStream.Close();
-                            CryptoStream.Close();
-                        }
-                    }
-                }
-                SymmetricKey.Clear();
-
-                byte[] x = new byte[ByteCount];
-                Array.Copy(PlainTextBytes, 0, x, 0, ByteCount);
-                return x;
-                }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Uses AES-CBC with padding to encrypt the given data using the aes key and iv from the class
-        /// </summary>
-        /// <param name="data">The plain data</param>
-        /// <returns>If the encryption failes, null; otherwise the encrypted data</returns>
-        private byte[] EncryptAES(byte[] data)
-        {
-            try
-            {
-                RijndaelManaged SymmetricKey = new RijndaelManaged
-                {
-                    Mode = CipherMode.CBC
-                };
-                byte[] CipherTextBytes = null;
-                using (ICryptoTransform Encryptor = SymmetricKey.CreateEncryptor(this.aesKey, this.aesIv))
-                {
-                    using (MemoryStream MemStream = new MemoryStream())
-                    {
-                        using (CryptoStream CryptoStream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write))
-                        {
-                            CryptoStream.Write(data, 0, data.Length);
-                            CryptoStream.FlushFinalBlock();
-                            CipherTextBytes = MemStream.ToArray();
-                            MemStream.Close();
-                            CryptoStream.Close();
-                        }
-                    }
-                }
-                SymmetricKey.Clear();
-                return CipherTextBytes;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Reads the next byte from the stream. If no data is available the method waits until eighter a new byte becomes available or the stream timeouted
         /// </summary>
         /// <returns>The next byte</returns>
@@ -218,7 +142,7 @@ namespace Pl_Covid_19_Anmeldung.connection
             try
             {
                 // Encryptes the data using the received key
-                byte[] encrypted = this.EncryptAES(data);
+                byte[] encrypted = SimpleSecurityUtils.EncryptAES(data,this.aesKey,this.aesIv);
 
                 // Checks if anything failed with the encryption
                 if (encrypted == null)
@@ -259,7 +183,7 @@ namespace Pl_Covid_19_Anmeldung.connection
                     back[i] = this.ReadByte();
 
                 // Decrypts the data
-                byte[] dec = this.Decrypt(back);
+                byte[] dec = SimpleSecurityUtils.DecryptAES(back,this.aesKey,this.aesIv);
 
                 // Checks if the decryption failed
                 if (dec == null)
