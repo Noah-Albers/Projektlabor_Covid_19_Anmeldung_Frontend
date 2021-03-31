@@ -1,0 +1,55 @@
+﻿<Window x:Class="Pl_Covid_19_Anmeldung.windows.requestDialog.RequestDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:own="clr-namespace:projektlabor.noah.planmeldung.uiElements"
+        Title="Title" Height="204.522" Width="415.947"
+        xmlns:lang="clr-namespace:projektlabor.noah.planmeldung.Properties.langs"
+        ResizeMode="NoResize"
+        Background="Gray">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <own:CustomInput
+                OnType="OnType"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                x:Name="FieldInput"
+                Title="Content"
+                />
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="2">
+                <Button
+                    IsEnabled="False"
+                    x:Name="buttonOk"
+                    Content="ButtonOk"
+                    FontSize="15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="20,2"
+                    Margin="0,0,20,0" Click="OnButtonOkClicked"
+                    />
+                <Button
+                    x:Name="buttonCancle"
+                    Content="ButtonCancle"
+                    FontSize="15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="20,2" Click="OnButtonCancleClicked"
+                    />
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>
