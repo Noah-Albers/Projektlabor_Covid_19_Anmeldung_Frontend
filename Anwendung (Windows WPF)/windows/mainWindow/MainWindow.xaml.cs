@@ -63,8 +63,6 @@ namespace projektlabor.noah.planmeldung.windows
 
             // Shows the loading window
             this.DisplayLoading(Lang.main_rfid_loading);
-
-            // TODO: Start login process
         });
 
         /// <summary>

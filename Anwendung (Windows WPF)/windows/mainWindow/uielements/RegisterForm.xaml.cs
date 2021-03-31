@@ -65,13 +65,13 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
         /// Holds all form field elements that are used at the registration form.
         /// This is used to autodelete all data from these forms.
         /// </summary>
-        private readonly RegisterInput[] fieldGroup;
+        private readonly CustomInput[] fieldGroup;
 
         public RegisterForm()
         {
             InitializeComponent();
             this.DataContext = this;
-            this.fieldGroup = new RegisterInput[] {
+            this.fieldGroup = new CustomInput[] {
                 this.FieldRFID,
                 this.FieldTelephone,
                 this.FieldEmail,

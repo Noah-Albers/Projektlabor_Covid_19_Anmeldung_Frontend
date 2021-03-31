@@ -9,7 +9,7 @@
              xmlns:lang="clr-namespace:projektlabor.noah.planmeldung.Properties.langs"
              x:Class="projektlabor.noah.planmeldung.windows.mainWindow.RegisterForm"
              xmlns:ui="clr-namespace:projektlabor.noah.planmeldung.uiElements"
-             xmlns:own="clr-namespace:projektlabor.noah.planmeldung.windows.mainWindow"
+             xmlns:own="clr-namespace:projektlabor.noah.planmeldung.uiElements"
              >
     <StackPanel Orientation="Vertical">
         <Grid>
@@ -19,8 +19,8 @@
                 <ColumnDefinition Width="49*"/>
                 <ColumnDefinition Width="224*"/>
             </Grid.ColumnDefinitions>
-            <own:RegisterInput x:Name="FieldFirstname" Grid.Column="0" Title="{x:Static lang:Lang.ui_register_firstname}" MaxLength="30" Grid.ColumnSpan="3" Margin="0,0,48.974,0.461"/>
-            <own:RegisterInput x:Name="FieldLastname" Grid.Column="3" Title="{x:Static lang:Lang.ui_register_lastname}" MaxLength="30" Margin="0.026,0,-0.304,0.461"/>
+            <own:CustomInput x:Name="FieldFirstname" Grid.Column="0" Title="{x:Static lang:Lang.ui_register_firstname}" MaxLength="30" Grid.ColumnSpan="3" Margin="0,0,48.974,0.461"/>
+            <own:CustomInput x:Name="FieldLastname" Grid.Column="3" Title="{x:Static lang:Lang.ui_register_lastname}" MaxLength="30" Margin="0.026,0,-0.304,0.461"/>
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -28,8 +28,8 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
-            <own:RegisterInput x:Name="FieldStreet" Grid.Column="0" Title="{x:Static lang:Lang.ui_register_street}" MaxLength="50"/>
-            <own:RegisterInput x:Name="FieldStreetNumber" ErrorOnOptional="*" TypeRegex="^[\da-zA-Z]*$" VerifyRegex="^\d+[a-zA-Z]*$" ErrorOnRegex="{x:Static lang:Lang.ui_register_error_street_number}" Grid.Column="2" Title="{x:Static lang:Lang.ui_register_street_number}" MaxLength="10"/>
+            <own:CustomInput x:Name="FieldStreet" Grid.Column="0" Title="{x:Static lang:Lang.ui_register_street}" MaxLength="50"/>
+            <own:CustomInput x:Name="FieldStreetNumber" ErrorOnOptional="*" TypeRegex="^[\da-zA-Z]*$" VerifyRegex="^\d+[a-zA-Z]*$" ErrorOnRegex="{x:Static lang:Lang.ui_register_error_street_number}" Grid.Column="2" Title="{x:Static lang:Lang.ui_register_street_number}" MaxLength="10"/>
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -37,8 +37,8 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="20*"/>
             </Grid.ColumnDefinitions>
-            <own:RegisterInput x:Name="FieldLocation" Grid.Column="0" Title="{x:Static lang:Lang.ui_register_location}" MaxLength="100"/>
-            <own:RegisterInput x:Name="FieldPLZ" ErrorOnOptional="*" TypeRegex="^\d*$" Grid.Column="2" Title="{x:Static lang:Lang.ui_register_plz}" MaxLength="5"/>
+            <own:CustomInput x:Name="FieldLocation" Grid.Column="0" Title="{x:Static lang:Lang.ui_register_location}" MaxLength="100"/>
+            <own:CustomInput x:Name="FieldPLZ" ErrorOnOptional="*" TypeRegex="^\d*$" Grid.Column="2" Title="{x:Static lang:Lang.ui_register_plz}" MaxLength="5"/>
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -46,8 +46,8 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="45*"/>
             </Grid.ColumnDefinitions>
-            <own:RegisterInput Grid.Column="0" x:Name="FieldTelephone" TypeRegex="^\d*$" Title="{x:Static lang:Lang.ui_register_telephone}" Optional="True" MaxLength="30"/>
-            <own:RegisterInput Grid.Column="2" x:Name="FieldEmail" ErrorOnRegex="{x:Static lang:Lang.ui_register_opterror_email}" VerifyRegex="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,6})+)$" Title="{x:Static lang:Lang.ui_register_email}" Optional="True" MaxLength="69"/>
+            <own:CustomInput Grid.Column="0" x:Name="FieldTelephone" TypeRegex="^\d*$" Title="{x:Static lang:Lang.ui_register_telephone}" Optional="True" MaxLength="30"/>
+            <own:CustomInput Grid.Column="2" x:Name="FieldEmail" ErrorOnRegex="{x:Static lang:Lang.ui_register_opterror_email}" VerifyRegex="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,6})+)$" Title="{x:Static lang:Lang.ui_register_email}" Optional="True" MaxLength="69"/>
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -56,7 +56,7 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="20*"/>
             </Grid.ColumnDefinitions>
-            <own:RegisterInput x:Name="FieldRFID" Grid.Column="0" IsWriteable="False" Title="{x:Static lang:Lang.ui_register_rfid}" Optional="True"/>
+            <own:CustomInput x:Name="FieldRFID" Grid.Column="0" IsWriteable="False" Title="{x:Static lang:Lang.ui_register_rfid}" Optional="True"/>
             <Button Grid.Column="1" Click="OnDeleteRFIDClick" Style="{StaticResource IconButton}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" MaxHeight="20" MaxWidth="20">
                 <Image Source="../../../rsc/Icon_DeleteButton.png"/>
             </Button>
