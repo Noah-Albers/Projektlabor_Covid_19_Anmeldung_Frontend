@@ -1,0 +1,33 @@
+﻿<Window x:Class="Pl_Covid_19_Anmeldung.windows.requests.AcknowledgmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pl_Covid_19_Anmeldung.windows.requests"
+        mc:Ignorable="d"
+        Title="AcknowledgmentWindow"
+        xmlns:own="clr-namespace:projektlabor.noah.planmeldung.uiElements"
+        xmlns:lang="clr-namespace:projektlabor.noah.planmeldung.Properties.langs"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="400"
+        SizeToContent="WidthAndHeight"
+        Background="Gray">
+    <StackPanel>
+        <TextBlock
+                x:Name="title"
+                FontSize="14"
+                Foreground="White"
+                Text="DisplayTitle"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"/>
+        <Button
+            x:Name="button"
+            Content="ButtonOk"
+            FontSize="15"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Padding="20,2"
+            Margin="20" Click="OnButtonClicked"
+            />
+    </StackPanel>
+</Window>
