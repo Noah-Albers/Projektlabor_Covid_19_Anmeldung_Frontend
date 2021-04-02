@@ -126,6 +126,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="config\ConfigCurruptedException.cs" />
+    <Compile Include="config\ConfigException.cs" />
+    <Compile Include="config\ConfigInvalidKeyException.cs" />
     <Compile Include="connection\exceptions\HandshakeException.cs" />
     <Compile Include="connection\PLCASocket.cs" />
     <Compile Include="connection\requests\GetStatusRequest.cs" />
@@ -139,16 +142,30 @@
     <Compile Include="datahandling\EntityInfoAttribute.cs" />
     <Compile Include="datahandling\exceptions\EntitySerializeException.cs" />
     <Compile Include="datahandling\exceptions\RequiredEntitySerializeException.cs" />
+    <Compile Include="PLCA.cs" />
     <Compile Include="Properties\langs\Lang.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Lang.resx</DependentUpon>
+    </Compile>
+    <Compile Include="security\SimpleSecurityUtils.cs" />
+    <Compile Include="windows\requests\AcknowledgmentWindow.xaml.cs">
+      <DependentUpon>AcknowledgmentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\configWindow\ConfigWindow.xaml.cs">
+      <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\mainWindow\uielements\RegisterForm.xaml.cs">
       <DependentUpon>RegisterForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\mainWindow\uielements\UserSearch.xaml.cs">
       <DependentUpon>UserSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\requests\TextinputWindow.xaml.cs">
+      <DependentUpon>TextinputWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\requests\YesNoWindow.xaml.cs">
+      <DependentUpon>YesNoWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="uiElements\CustomPopup.xaml">
       <SubType>Designer</SubType>
@@ -158,11 +175,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="windows\requests\AcknowledgmentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\configWindow\ConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="windows\mainWindow\uielements\RegisterForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="windows\mainWindow\uielements\RegisterInput.xaml">
+    <Page Include="uiElements\CustomInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,7 +199,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Config.cs" />
+    <Compile Include="config\Config.cs" />
     <Compile Include="datahandling\entities\TimespentEntity.cs" />
     <Compile Include="datahandling\entities\SimpleUserEntity.cs" />
     <Compile Include="utils\LibraryExtensions.cs" />
@@ -187,14 +212,22 @@
     <Compile Include="uiElements\LoadingAnimation.xaml.cs">
       <DependentUpon>LoadingAnimation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="windows\mainWindow\uielements\RegisterInput.xaml.cs">
-      <DependentUpon>RegisterInput.xaml</DependentUpon>
+    <Compile Include="uiElements\CustomInput.xaml.cs">
+      <DependentUpon>CustomInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\mainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="windows\mainWindow\uielements\UserSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\requests\TextinputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\requests\YesNoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

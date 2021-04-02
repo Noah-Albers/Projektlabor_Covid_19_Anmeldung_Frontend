@@ -8,6 +8,7 @@
         xmlns:ui="clr-namespace:projektlabor.noah.planmeldung.uiElements"
         xmlns:own="clr-namespace:projektlabor.noah.planmeldung.windows.mainWindow"
         x:Class="projektlabor.noah.planmeldung.windows.MainWindow" WindowStartupLocation="CenterScreen"
+        Loaded="OnWindowLoaded"
         >
     <!--
         WindowState="Maximized"
@@ -83,9 +84,6 @@
                         BorderBrush="Black"
                         BorderThickness="1"
                         >
-
-
-
                         <StackPanel>
                             <TextBlock FontSize="30" Text="{x:Static lang:Lang.main_login_title}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
                             <Grid>
@@ -134,6 +132,7 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                             <!--Beta Slogan-->
                             <TextBlock FontSize="10" Foreground="Red" Padding="10,0" VerticalAlignment="Bottom" FontFamily="Rockwell Nova">Beta-Version</TextBlock>
+                            <Button Content="ConfigPlatzhalter" Click="OnConfigButtonClicked"/>
                             <!--RFID-Disconnected-->
                             <Button Style="{StaticResource IconButton}" Click="OnRFIDButtonClicked" x:Name="ButtonErrorRFID" ToolTip="RFID-Scanner nicht verbunden, verbinden?">
                                 <Image Source="../../rsc/Icon_RFID_Error_Button.png" MaxHeight="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>

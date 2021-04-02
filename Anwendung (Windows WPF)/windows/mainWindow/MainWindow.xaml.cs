@@ -1,4 +1,6 @@
-﻿using projektlabor.noah.planmeldung.Properties.langs;
+﻿using Pl_Covid_19_Anmeldung;
+using Pl_Covid_19_Anmeldung.windows.configWindow;
+using projektlabor.noah.planmeldung.Properties.langs;
 using projektlabor.noah.planmeldung.utils;
 using System;
 using System.Threading.Tasks;
@@ -43,6 +45,24 @@ namespace projektlabor.noah.planmeldung.windows
         }
 
         #region Event-handlers
+
+        /// <summary>
+        /// Executes once the window loaded
+        /// </summary>
+        private void OnWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            // Loads the config
+            Config.GetConfigFromUser((isNew,cfg,pw) =>
+            {
+                // Sets the config
+                PLCA.LOADED_CONFIG = cfg;
+
+                // Checks if the config got newly created
+                if(isNew)
+                    // Opens a new config-edit window
+                    new ConfigWindow(cfg,pw).ShowDialog();
+            }, this.Close);
+        }
 
         /// <summary>
         /// Executes when an rfid gets recevied from the esp32-rfid-scanner
@@ -118,6 +138,19 @@ namespace projektlabor.noah.planmeldung.windows
         /// Event to hook when a button should close the overly
         /// </summary>
         private void OnButtonCloseClicked(object sender, RoutedEventArgs e) => this.CloseOverlay();
+
+        /// <summary>
+        /// Event to open the config-edit window
+        /// </summary>
+        private void OnConfigButtonClicked(object sender, RoutedEventArgs e)
+        {
+            // Loads the config
+            Config.GetConfigFromUser((_,cfg,pw) =>
+            {
+                // Opens a new config-edit window
+                new ConfigWindow(cfg,pw).ShowDialog();
+            },null);
+        }
 
         #endregion
 
