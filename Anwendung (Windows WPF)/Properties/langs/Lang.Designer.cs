@@ -143,6 +143,312 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Neues Passwort.
+        /// </summary>
+        public static string config_button_newpw {
+            get {
+                return ResourceManager.GetString("config.button.newpw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rückgängig.
+        /// </summary>
+        public static string config_button_reset {
+            get {
+                return ResourceManager.GetString("config.button.reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speichern.
+        /// </summary>
+        public static string config_button_save {
+            get {
+                return ResourceManager.GetString("config.button.save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rohmaterial Kopieren.
+        /// </summary>
+        public static string config_currepted_copy {
+            get {
+                return ResourceManager.GetString("config.currepted.copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ihr eingegebener Schlüssel ist richtig und die Datei konnte geladen werden. Leider das Dateiformat kapput und kann nicht geladen werden. Möchten Sie eine neue Konifiguration anlegen? Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopieren..
+        /// </summary>
+        public static string config_currupted_info {
+            get {
+                return ResourceManager.GetString("config.currupted.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abbrechen.
+        /// </summary>
+        public static string config_currupted_no {
+            get {
+                return ResourceManager.GetString("config.currupted.no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Konfiguration is Fehlerhaft.
+        /// </summary>
+        public static string config_currupted_title {
+            get {
+                return ResourceManager.GetString("config.currupted.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neu erstellen.
+        /// </summary>
+        public static string config_currupted_yes {
+            get {
+                return ResourceManager.GetString("config.currupted.yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP/Domain (Remote Server).
+        /// </summary>
+        public static string config_host {
+            get {
+                return ResourceManager.GetString("config.host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schließen.
+        /// </summary>
+        public static string config_loaderr_close {
+            get {
+                return ResourceManager.GetString("config.loaderr.close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehler beim laden.
+        /// </summary>
+        public static string config_loaderr_title {
+            get {
+                return ResourceManager.GetString("config.loaderr.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehler beim erstellen der Konfiguration.
+        /// </summary>
+        public static string config_new_error {
+            get {
+                return ResourceManager.GetString("config.new.error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schließen.
+        /// </summary>
+        public static string config_new_error_button {
+            get {
+                return ResourceManager.GetString("config.new.error.button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bitte geben Sie ein neues Passwort an..
+        /// </summary>
+        public static string config_new_pass_text {
+            get {
+                return ResourceManager.GetString("config.new.pass.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neues Passwort.
+        /// </summary>
+        public static string config_new_pass_title {
+            get {
+                return ResourceManager.GetString("config.new.pass.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abbrechen.
+        /// </summary>
+        public static string config_newpw_no {
+            get {
+                return ResourceManager.GetString("config.newpw.no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neues Passwort eingeben.
+        /// </summary>
+        public static string config_newpw_title {
+            get {
+                return ResourceManager.GetString("config.newpw.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwort ändern.
+        /// </summary>
+        public static string config_newpw_yes {
+            get {
+                return ResourceManager.GetString("config.newpw.yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es wurde keine Konfigurationsdatei gefunden, möchten Sie eine neue erstellen?.
+        /// </summary>
+        public static string config_notexisting_info {
+            get {
+                return ResourceManager.GetString("config.notexisting.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nein.
+        /// </summary>
+        public static string config_notexisting_no {
+            get {
+                return ResourceManager.GetString("config.notexisting.no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Konfigurationsdatei existiert nicht.
+        /// </summary>
+        public static string config_notexisting_title {
+            get {
+                return ResourceManager.GetString("config.notexisting.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ja.
+        /// </summary>
+        public static string config_notexisting_yes {
+            get {
+                return ResourceManager.GetString("config.notexisting.yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abbrechen.
+        /// </summary>
+        public static string config_pass_cancle {
+            get {
+                return ResourceManager.GetString("config.pass.cancle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bestätigen.
+        /// </summary>
+        public static string config_pass_ok {
+            get {
+                return ResourceManager.GetString("config.pass.ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwort benötigt.
+        /// </summary>
+        public static string config_pass_title {
+            get {
+                return ResourceManager.GetString("config.pass.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port-Nummer (Remote Server).
+        /// </summary>
+        public static string config_port {
+            get {
+                return ResourceManager.GetString("config.port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RSA-Schlüssel.
+        /// </summary>
+        public static string config_rsa {
+            get {
+                return ResourceManager.GetString("config.rsa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string config_save_button {
+            get {
+                return ResourceManager.GetString("config.save.button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehlerhafter Schlüssel (Private Key).
+        /// </summary>
+        public static string config_save_key {
+            get {
+                return ResourceManager.GetString("config.save.key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehlerhafter Port.
+        /// </summary>
+        public static string config_save_port {
+            get {
+                return ResourceManager.GetString("config.save.port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unbekannter Fehler.
+        /// </summary>
+        public static string config_save_unknown {
+            get {
+                return ResourceManager.GetString("config.save.unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Konfiguration.
+        /// </summary>
+        public static string config_title {
+            get {
+                return ResourceManager.GetString("config.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erneut versuchen.
+        /// </summary>
+        public static string config_wrongpw_retry {
+            get {
+                return ResourceManager.GetString("config.wrongpw.retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Falsches Passwort.
+        /// </summary>
+        public static string config_wrongpw_title {
+            get {
+                return ResourceManager.GetString("config.wrongpw.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sichere das Profil....
         /// </summary>
         public static string main_admin_edituser_loading {
@@ -431,7 +737,7 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ihr Daten werden von uns über die Zeit der Covid-19 Pandemie gespeichert. Wenn Sie angeben, dass ihre Daten nach 6 Wochen gelöscht werden sollen, werden diese innerhalb von 4-6 Wochen von unserem System entfernt. Ihre Daten werden von uns nicht weitergegeben und sind nur von Administratoren einsehbar. Gespeichert werden ihre Daten auf unserem Server im Projektlabor und auf einem Goneo-server welcher in Frankfurt steht..
+        ///   Looks up a localized string similar to Ihr Daten werden von uns über die Zeit der Covid-19 Pandemie gespeichert. Wenn Sie angeben, dass ihre Daten nach 6 Wochen gelöscht werden sollen, werden diese innerhalb von 4-6 Wochen von unserem System entfernt. Ihre Daten werden von uns nicht weitergegeben und sind nur von Administratoren einsehbar. Gespeichert werden ihre Daten auf unserem Server im Projektlabor und auf einem Goneo-server, welcher in Frankfurt steht..
         /// </summary>
         public static string main_register_accept_text {
             get {

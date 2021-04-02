@@ -145,6 +145,108 @@
   <data name="backup.upload" xml:space="preserve">
     <value>Lade Backup hoch...</value>
   </data>
+  <data name="config.button.newpw" xml:space="preserve">
+    <value>Neues Passwort</value>
+  </data>
+  <data name="config.button.reset" xml:space="preserve">
+    <value>Rückgängig</value>
+  </data>
+  <data name="config.button.save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="config.currepted.copy" xml:space="preserve">
+    <value>Rohmaterial Kopieren</value>
+  </data>
+  <data name="config.currupted.info" xml:space="preserve">
+    <value>Ihr eingegebener Schlüssel ist richtig und die Datei konnte geladen werden. Leider das Dateiformat kapput und kann nicht geladen werden. Möchten Sie eine neue Konifiguration anlegen? Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopieren.</value>
+  </data>
+  <data name="config.currupted.no" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="config.currupted.title" xml:space="preserve">
+    <value>Konfiguration is Fehlerhaft</value>
+  </data>
+  <data name="config.currupted.yes" xml:space="preserve">
+    <value>Neu erstellen</value>
+  </data>
+  <data name="config.host" xml:space="preserve">
+    <value>IP/Domain (Remote Server)</value>
+  </data>
+  <data name="config.loaderr.close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="config.loaderr.title" xml:space="preserve">
+    <value>Fehler beim laden</value>
+  </data>
+  <data name="config.new.error" xml:space="preserve">
+    <value>Fehler beim erstellen der Konfiguration</value>
+  </data>
+  <data name="config.new.error.button" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="config.new.pass.text" xml:space="preserve">
+    <value>Bitte geben Sie ein neues Passwort an.</value>
+  </data>
+  <data name="config.new.pass.title" xml:space="preserve">
+    <value>Neues Passwort</value>
+  </data>
+  <data name="config.newpw.no" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="config.newpw.title" xml:space="preserve">
+    <value>Neues Passwort eingeben</value>
+  </data>
+  <data name="config.newpw.yes" xml:space="preserve">
+    <value>Passwort ändern</value>
+  </data>
+  <data name="config.notexisting.info" xml:space="preserve">
+    <value>Es wurde keine Konfigurationsdatei gefunden, möchten Sie eine neue erstellen?</value>
+  </data>
+  <data name="config.notexisting.no" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="config.notexisting.title" xml:space="preserve">
+    <value>Konfigurationsdatei existiert nicht</value>
+  </data>
+  <data name="config.notexisting.yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="config.pass.cancle" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="config.pass.ok" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="config.pass.title" xml:space="preserve">
+    <value>Passwort benötigt</value>
+  </data>
+  <data name="config.port" xml:space="preserve">
+    <value>Port-Nummer (Remote Server)</value>
+  </data>
+  <data name="config.rsa" xml:space="preserve">
+    <value>RSA-Schlüssel</value>
+  </data>
+  <data name="config.save.button" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="config.save.key" xml:space="preserve">
+    <value>Fehlerhafter Schlüssel (Private Key)</value>
+  </data>
+  <data name="config.save.port" xml:space="preserve">
+    <value>Fehlerhafter Port</value>
+  </data>
+  <data name="config.save.unknown" xml:space="preserve">
+    <value>Unbekannter Fehler</value>
+  </data>
+  <data name="config.title" xml:space="preserve">
+    <value>Konfiguration</value>
+  </data>
+  <data name="config.wrongpw.retry" xml:space="preserve">
+    <value>Erneut versuchen</value>
+  </data>
+  <data name="config.wrongpw.title" xml:space="preserve">
+    <value>Falsches Passwort</value>
+  </data>
   <data name="main.admin.edituser.loading" xml:space="preserve">
     <value>Sichere das Profil...</value>
   </data>
@@ -242,7 +344,7 @@
     <value>Ich akzeptiere, dass meine Daten gespeichert werden.</value>
   </data>
   <data name="main.register.accept.text" xml:space="preserve">
-    <value>Ihr Daten werden von uns über die Zeit der Covid-19 Pandemie gespeichert. Wenn Sie angeben, dass ihre Daten nach 6 Wochen gelöscht werden sollen, werden diese innerhalb von 4-6 Wochen von unserem System entfernt. Ihre Daten werden von uns nicht weitergegeben und sind nur von Administratoren einsehbar. Gespeichert werden ihre Daten auf unserem Server im Projektlabor und auf einem Goneo-server welcher in Frankfurt steht.</value>
+    <value>Ihr Daten werden von uns über die Zeit der Covid-19 Pandemie gespeichert. Wenn Sie angeben, dass ihre Daten nach 6 Wochen gelöscht werden sollen, werden diese innerhalb von 4-6 Wochen von unserem System entfernt. Ihre Daten werden von uns nicht weitergegeben und sind nur von Administratoren einsehbar. Gespeichert werden ihre Daten auf unserem Server im Projektlabor und auf einem Goneo-server, welcher in Frankfurt steht.</value>
   </data>
   <data name="main.register.button" xml:space="preserve">
     <value>Registrieren</value>
