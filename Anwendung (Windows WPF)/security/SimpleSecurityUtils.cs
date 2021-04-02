@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -113,5 +114,53 @@ namespace Pl_Covid_19_Anmeldung.security
                 // Computes the hash
                 return hash.ComputeHash(data);
         }
+
+        /// <summary>
+        /// Loads rsa-parameters from a json-object (Using a program-consistent spec)
+        /// </summary>
+        /// <param name="obj">The raw json object from the loaded config</param>
+        /// <returns>The loaded rsa-parameters</returns>
+        /// <exception cref="Exception">Can throw an exception while loading. (Parameters not given, not a b64 string, etc.)</exception>
+        public static RSAParameters LoadRSAFromJson(JObject obj)
+        {
+            // Short function to load rsa-parameters
+            byte[] TryLoad(string name) => Convert.FromBase64String((string)obj[name]);
+
+            return new RSAParameters()
+            {
+                D = TryLoad("d"),
+                DP = TryLoad("dp"),
+                DQ = TryLoad("dq"),
+                Modulus = TryLoad("modulus"),
+                InverseQ = TryLoad("inverseq"),
+                Exponent = TryLoad("exponent"),
+                P = TryLoad("p"),
+                Q = TryLoad("q")
+            };
+        }
+
+        /// <summary>
+        /// Saves the given rsa-parameters to a jobject (Using a program-consistent spec)
+        /// </summary>
+        /// <param name="rsaKey">The rsa-parameters that shall be saved</param>
+        /// <returns>A JObject that can be converted back into rsa-parameters using the LoadFromObject method.</returns>
+        public static JObject SaveRSAToJson(RSAParameters rsaKey)
+        {
+            // Short function to save a byte[] to a base64 string
+            string Save(byte[] bytes) => Convert.ToBase64String(bytes);
+
+            return new JObject
+            {
+                ["d"] = Save(rsaKey.D),
+                ["dp"] = Save(rsaKey.DP),
+                ["dq"] = Save(rsaKey.DQ),
+                ["modulus"] = Save(rsaKey.Modulus),
+                ["inverseq"] = Save(rsaKey.InverseQ),
+                ["exponent"] = Save(rsaKey.Exponent),
+                ["p"] = Save(rsaKey.P),
+                ["q"] = Save(rsaKey.Q)
+            };
+        }
+
     }
 }
