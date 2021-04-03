@@ -11,10 +11,11 @@ namespace Pl_Covid_19_Anmeldung.connection
 {
     class PLCASocket : IDisposable
     {
-        /// <summary>
-        /// Client id to indicate that the requesting user is the covid-login
-        /// </summary>
+        // Client id to indicate that the requesting user is the covid-login
         private const int CLIENT_ID = 0;
+
+        // Reference to the program-logger
+        private Logger logger = PLCA.LOGGER;
 
         // The stream to access any read/write functions
         private readonly NetworkStream stream;
@@ -45,12 +46,16 @@ namespace Pl_Covid_19_Anmeldung.connection
         {
             try
             {
+                this.logger.Debug("Starting connection to "+host+":"+port);
+
                 // Connects to the remote host
                 this.client = new TcpClient(host, port);
                 this.stream = this.client.GetStream();
             }
             catch (SocketException)
             {
+                this.logger.Debug("Connection failed, socket closed.");
+
                 // Converts a socket exception to an io-exception for easier handling later
                 throw new IOException();
             }
@@ -77,15 +82,19 @@ namespace Pl_Covid_19_Anmeldung.connection
                 // Sends the client-id
                 this.stream.WriteByte(CLIENT_ID);
 
+                this.logger.Debug("Send client-id");
+
                 // Receives the aes-data
                 for (int i = 0; i < 256; i++)
                     aesBytes[i] = this.ReadByte();
 
-                // TODO: Log
-                Console.WriteLine("Received aes-secrets");
+                this.logger.Debug("Received aes-secrets");
+                this.logger.Critical(string.Join(",", aesBytes));
             }
             catch
             {
+                this.logger.Debug("Connection closed (I/O)");
+
                 // Failed to receive the key (or failed to send the id)
                 throw new HandshakeException(HandshakeExceptionType.IO);
             }
@@ -95,15 +104,19 @@ namespace Pl_Covid_19_Anmeldung.connection
                 // Decryptes the bytes
                 byte[] decryptedAes = this.rsaService.Decrypt(aesBytes, false);
 
-                // TODO: Log
-                Console.WriteLine("Decrypted successfull");
+                this.logger.Debug("Decrypted successfull");
+                this.logger.Critical(string.Join(",", decryptedAes));
 
                 // Copies the aes key and aes iv
                 Array.Copy(decryptedAes, 0, this.aesKey, 0, 32);
                 Array.Copy(decryptedAes, 32, this.aesIv, 0, 16);
+
+                this.logger.Critical("Key=" + string.Join(",", this.aesKey) + " Iv=" + string.Join(",", this.aesIv));
             }
             catch
             {
+                this.logger.Debug("Failed to decrypt");
+
                 // Failed to decrypt the aes-key
                 throw new HandshakeException(HandshakeExceptionType.RSA_DECRYPT);
             }

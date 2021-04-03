@@ -162,6 +162,7 @@ namespace projektlabor.noah.planmeldung.windows
         /// </summary>
         private void StartRFIDReader()
         {
+            // TODO: Readability
             Task.Run(() =>
             {
                 // Starts the rfid-reader

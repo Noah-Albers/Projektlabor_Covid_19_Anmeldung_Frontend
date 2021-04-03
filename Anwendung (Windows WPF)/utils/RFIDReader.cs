@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Pl_Covid_19_Anmeldung;
+using System;
 using System.IO.Ports;
 
 namespace projektlabor.noah.planmeldung.utils
 {
     class RFIDReader
     {
+        // Reference to the logger of the program
+        private readonly Logger log = PLCA.LOGGER;
+
         /// <summary>
         /// Holds the serial connection
         /// </summary>
@@ -28,6 +32,8 @@ namespace projektlabor.noah.planmeldung.utils
         {
             // Gets all ports
             string[] ports = SerialPort.GetPortNames();
+
+            log.Info("Starting to request all ports: "+string.Join(",",ports));
 
             // Checks all ports if the esp32-rfid-scanner is connected
             foreach (string p in ports)
@@ -61,6 +67,8 @@ namespace projektlabor.noah.planmeldung.utils
                             // Executes the success event
                             onPortFound();
 
+                            log.Info("RFID-Scanner found on port: "+p);
+
                             // Handle the reading of the serial id's
                             this.HandleReading(onReceivId, onPortDisconnect);
                             return;
@@ -69,9 +77,11 @@ namespace projektlabor.noah.planmeldung.utils
                 }
                 catch { }
             }
+
+            log.Info("No RFID-Scanner could be found");
+
             // Execute without finding a port
             onNoPortFound();
-
         }
 
         /// <summary>
@@ -93,8 +103,14 @@ namespace projektlabor.noah.planmeldung.utils
                     while (!data.EndsWith(this.endIndicator))
                         data += (char)con.ReadChar();
 
+                    // Gets the id
+                    string id = data.Substring(0, data.Length - this.endIndicator.Length);
+
+                    log.Debug("Received rfid");
+                    log.Critical(id);
+
                     // Executes the id event
-                    onReceivId(data.Substring(0, data.Length - this.endIndicator.Length));
+                    onReceivId(data);
                 }
             }
             catch

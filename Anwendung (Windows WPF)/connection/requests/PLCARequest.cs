@@ -10,6 +10,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 {
     abstract class PLCARequest
     {
+        // Reference to the logger for the program
+        protected static Logger log = PLCA.LOGGER;
+
         // Executer when an handshake error occurres
         public Action<HandshakeExceptionType> onErrorHandshake;
         // Executer when an io error occurres
@@ -28,13 +31,16 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 
         /// <summary>
         /// Handles any fatal errors if any occure.
-        /// Fatal errors are errors that occurre before the handler for the request is executed on the server. Usually those occurre when a request has no valid endpoint or data for the handler.
+        /// Fatal errors are errors that occurre before the handler for the request is executed on the server.
+        /// Usually those occurre when a request has no valid endpoint or data for the handler.
         /// </summary>
         /// <param name="exc">The except-error-string to determin what kind of except-error occurred</param>
         /// <returns>The json-object that can be forwarded as a response from the server. Otherwise just throw an error</returns>
         /// <exception cref="Exception">Can throw an exception if no special handling for the error is required</exception>
         protected void HandleFatalError(string exc)
         {
+            log.Debug("Fatal error returned by remote server: "+exc);
+
             // Checks the returned error
             switch (exc)
             {
@@ -74,8 +80,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                         ["data"] = requestData                  // Appends the request-data
                     };
 
+                    log.Debug("Sending request...");
+
                     // Sends the request
                     socket.SendPacket(Encoding.UTF8.GetBytes(request.ToString()));
+
+                    log.Debug("Waiting for response");
 
                     // Waits for the response
                     JObject resp = JObject.Parse(Encoding.UTF8.GetString(socket.ReceivePacket()));
@@ -112,21 +122,23 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             }
             catch (HandshakeException e)
             {
-                // TODO: Log
                 this.onErrorHandshake?.Invoke(e.Type);
             }
             catch (Exception e)
             {
-                // TOOD: Log
                 // Checks if the error is an io-error
                 if (e is IOException || e is SocketException)
                     // Handle the io-error
                     this.onErrorIO?.Invoke();
                 else
+                {
+                    log.Debug("Unknown error occurred while performing the request");
+                    log.Critical(e.Message);
+
                     // Unknown error
                     this.onUnknownError?.Invoke();
-                Console.WriteLine(e.StackTrace);
-            }/**/
+                }
+            }
         }
     }
 }

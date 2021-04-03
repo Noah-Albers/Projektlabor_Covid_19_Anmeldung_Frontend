@@ -142,6 +142,7 @@
     <Compile Include="datahandling\EntityInfoAttribute.cs" />
     <Compile Include="datahandling\exceptions\EntitySerializeException.cs" />
     <Compile Include="datahandling\exceptions\RequiredEntitySerializeException.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="PLCA.cs" />
     <Compile Include="Properties\langs\Lang.Designer.cs">
       <AutoGen>True</AutoGen>

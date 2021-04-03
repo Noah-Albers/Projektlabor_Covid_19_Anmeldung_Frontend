@@ -28,8 +28,6 @@ namespace projektlabor.noah.planmeldung.uiElements
         {
             get => this.InputField.Text;
 
-            // TODO:
-         //   get => (string)GetValue(dependencyProperty);
             set
             {
                 this.previousText = value;

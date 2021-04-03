@@ -16,6 +16,8 @@ namespace projektlabor.noah.planmeldung
     public class Config
     {
 
+        // Reference to the program-logger
+        private static readonly Logger log = PLCA.LOGGER;
 
         /// <summary>
         /// Port on the remote server on which the backend is listening
@@ -58,6 +60,7 @@ namespace projektlabor.noah.planmeldung
 
             // Checks if the encryption failed
             if (encData == null)
+
                 // Unknown exception
                 throw new ConfigException();
 
@@ -120,14 +123,22 @@ namespace projektlabor.noah.planmeldung
         /// <returns>Null if the user cancled the config-request; otherwise the loaded or newly created config</returns>
         public static void GetConfigFromUser(Action<bool, Config,string> OnReceive, Action OnCancel)
         {
+            log.Debug("Starting to request the config (From the user)");
+
             // Checks if a config file exists
             if (!File.Exists(PLCA.CONFIG_PATH))
             {
+                log.Debug("Config does not exist, asking to create a new one.");
+
                 // Creates a new window to ask the user for further instructions
                 var askNew = new YesNoWindow(
                     Lang.config_notexisting_title,
                     OnCreateNewConfig,
-                    OnCancel,
+                    ()=>
+                    {
+                        log.Debug("Aborted config creation");
+                        OnCancel?.Invoke();
+                    },
                     Lang.config_notexisting_yes,
                     Lang.config_notexisting_no,
                     Lang.config_notexisting_title,
@@ -144,7 +155,11 @@ namespace projektlabor.noah.planmeldung
                 Lang.config_pass_title,
                 Lang.config_pass_title,
                 OnReceivePassword,
-                OnCancel,
+                ()=>
+                {
+                    log.Debug("Aborted config creation #2");
+                    OnCancel?.Invoke();
+                },
                 Lang.config_pass_ok,
                 Lang.config_pass_cancle);
 
@@ -156,17 +171,27 @@ namespace projektlabor.noah.planmeldung
             {
                 try
                 {
+                    log.Debug("Received password, creating new config.");
+                    log.Critical("Password="+password);
+
                     // Tries to load the config and sends the received config
                     OnReceive(false,LoadConfig(PLCA.CONFIG_PATH, password),password);
                 }
                 catch (ConfigCurruptedException e)
                 {
+                    log.Warn("The previous config could be decrypted, but is currupted");
+                    log.Critical("Raw previous content="+e.RawInput);
+
                     // The config could be decrypted but is currupted
                     // Creates a new window to ask the user for further instructions
                     var askNew = new YesNoWindow(
                         Lang.config_currupted_title,
                         OnCreateNewConfig,
-                        OnCancel,
+                        () =>
+                        {
+                            log.Debug("Aborted config creation #3");
+                            OnCancel?.Invoke();
+                        },
                         Lang.config_currupted_yes,
                         Lang.config_currupted_no,
                         Lang.config_currupted_title,
@@ -180,6 +205,8 @@ namespace projektlabor.noah.planmeldung
                 }
                 catch (ConfigInvalidKeyException)
                 {
+                    log.Debug("User has specified an invalid password.");
+
                     // Creates a window to inform the user
                     var ackWin = new AcknowledgmentWindow(
                         Lang.config_wrongpw_title,
@@ -193,11 +220,18 @@ namespace projektlabor.noah.planmeldung
                 }
                 catch (Exception e)
                 {
+                    log.Debug("Unknown error occurred (Maybe a file error with permissions?)");
+                    log.Critical(e);
+
                     // Creates a window to inform the user
                     var ackWin = new AcknowledgmentWindow(
                         Lang.config_loaderr_title,
                         e.Message,
-                        OnCancel,
+                        () =>
+                        {
+                            log.Debug("Aborted config creation #4");
+                            OnCancel?.Invoke();
+                        },
                         Lang.config_loaderr_close
                     );
 
@@ -209,12 +243,18 @@ namespace projektlabor.noah.planmeldung
             // Executes once the user wants to create a new config (Because the old one got destroyed)
             void OnCreateNewConfig()
             {
+                log.Debug("Asking for the password of the new config");
+
                 // Asks for the new password
                 var askPass2 = new TextinputWindow(
                     Lang.config_new_pass_title,
                     Lang.config_new_pass_text,
                     OnSubmitNewPassword,
-                    OnCancel,
+                    () =>
+                    {
+                        log.Debug("Aborted config creation #5");
+                        OnCancel?.Invoke();
+                    },
                     Lang.config_pass_ok,
                     Lang.config_pass_cancle
                 );
@@ -246,14 +286,22 @@ namespace projektlabor.noah.planmeldung
 
                 try
                 {
+                    log.Debug("Saving new config");
+                    log.Critical("New Password="+password);
+
                     // Tries to save the config
                     cfg.SaveConfig(PLCA.CONFIG_PATH, password);
+
+                    log.Debug("Successfully saved the new config");
 
                     // Returns the new config
                     OnReceive(true,cfg,password);
                 }
                 catch (Exception e)
                 {
+                    log.Debug("Error saving the new config. Maybe a file-error with permissions?");
+                    log.Critical(e);
+
                     // Creates the warning window
                     var ackWin = new AcknowledgmentWindow(
                         Lang.config_new_error,
