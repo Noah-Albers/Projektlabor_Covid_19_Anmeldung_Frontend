@@ -160,44 +160,41 @@ namespace projektlabor.noah.planmeldung.windows
         /// Used by seperated thread to start the background-rfid reader.
         /// Handles the successful connection to the rfid scanner and also the visuals.
         /// </summary>
-        private void StartRFIDReader()
+        private void StartRFIDReader() => Task.Run(() =>
         {
-            // TODO: Readability
-            Task.Run(() =>
+            // Starts the rfid-reader
+            this.rfidreader.Start(
+                OnPortNotFound,
+                OnPortFound,
+                OnPortDisconnect,
+                this.OnRFIDReceiv
+            );
+
+            // Executes if no port with a scanner could be found
+            void OnPortNotFound()
             {
-                // Starts the rfid-reader
-                this.rfidreader.Start(() =>
-                // If no port was found
-                {
-                    // Displays the error
-                    this.Dispatcher.Invoke(() =>
-                        this.DisplayInfo(
-                            Lang.main_rfid_error_port_not_found_title,
-                            Lang.main_rfid_error_port_not_found_text,
-                            this.CloseOverlay,
-                            Lang.main_popup_close
-                        )
-                    );
-                }, () =>
-                // Once a port was found
-                {
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        // Removes the overlay
-                        this.CloseOverlay();
-                        // Hides the error button for the disconnected rfid-scanner
-                        this.ButtonErrorRFID.Visibility = Visibility.Collapsed;
-                    });
-                }, () =>
-                // Once the port got disconnected again
-                {
-                    // Displays the error
-                    this.Dispatcher.Invoke(() =>
-                        this.ButtonErrorRFID.Visibility = Visibility.Visible
-                    );
-                }, this.OnRFIDReceiv);
+                this.DisplayInfo(
+                    Lang.main_rfid_error_port_not_found_title,
+                    Lang.main_rfid_error_port_not_found_text,
+                    this.CloseOverlay,
+                    Lang.main_popup_close
+                );
+            }
+
+            // Executes once the port with a scanner got found
+            void OnPortFound() => this.Dispatcher.Invoke(() =>
+            {
+                // Removes the overlay
+                this.CloseOverlay();
+                // Hides the error button for the disconnected rfid-scanner
+                this.ButtonErrorRFID.Visibility = Visibility.Collapsed;
             });
-        }
+
+            // Executes once the port gets disconnected again
+            void OnPortDisconnect() => this.Dispatcher.Invoke(() =>
+                this.ButtonErrorRFID.Visibility = Visibility.Visible
+            );
+        });
         
         /// <summary>
         /// Displays the fatal error message to the user
