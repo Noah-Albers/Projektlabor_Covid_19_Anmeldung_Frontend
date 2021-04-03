@@ -18,35 +18,28 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <summary>
         /// Starts the request
         /// </summary>
-        public void DoRequest(string host, int port, RSAParameters rsa) =>
-        this.DoRequest(host, port, rsa, new JObject(), resp =>
+        public void DoRequest(string host, int port, RSAParameters rsa)
+        {
+            log.Debug("Starting request to fetch all users (Simple version)");
+
+            // Starts the request
+            this.DoRequest(host, port, rsa, new JObject(), OnReceive, (_, _2) => this.onUnknownError?.Invoke());
+        }
+
+        private void OnReceive(JObject resp)
         {
 
-            // Checks if the users are given
-            if (!resp.ContainsKey("users"))
-            {
-                this.onUnknownError();
-                return;
-            }
-
-            // Gets the users
-            object rawUsers = resp["users"];
-
-            // Checks if the users are given as an array
-            if(!(rawUsers is JArray))
-            {
-                this.onUnknownError();
-                return;
-            }
-
             // Gets the raw users as an jarray
-            JArray rawUserArr = ((JArray)rawUsers);
+            JArray rawUserArr = (JArray)resp["users"];
+
+            log.Debug("Received users");
+            log.Critical(rawUserArr.ToString());
 
             // Creates the array
             SimpleUserEntity[] users = new SimpleUserEntity[rawUserArr.Count];
 
             // Parses every user
-            for(int i = 0; i < users.Length; i++)
+            for (int i = 0; i < users.Length; i++)
                 try
                 {
                     // Tries to load the user
@@ -56,12 +49,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 catch
                 {
                     // If any user failes to load, the request is invalid
-                    this.onUnknownError();
+                    this.onUnknownError?.Invoke();
                     return;
                 }
 
             // Sends all received users
             this.onReceive?.Invoke(users);
-        });
+        }
     }
 }

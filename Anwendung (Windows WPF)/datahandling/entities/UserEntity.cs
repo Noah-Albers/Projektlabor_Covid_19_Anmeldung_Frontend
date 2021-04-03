@@ -48,5 +48,10 @@ namespace projektlabor.noah.planmeldung.datahandling.entities
         {
             return ENTRYS;
         }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} Loc= {this.Street} {this.StreetNumber} {this.Location} {this.PLZ} Telephone={this.TelephoneNumber} Email={this.Email} RFID={this.Rfid} Autodelete={this.AutoDeleteAccount} Registered={this.RegisterDate}";
+        }
     }
 }

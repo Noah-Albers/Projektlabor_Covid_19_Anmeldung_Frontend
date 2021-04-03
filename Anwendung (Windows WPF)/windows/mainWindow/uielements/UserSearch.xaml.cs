@@ -57,6 +57,8 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
             // Starts the task
             this.taskFetching = Task.Run(() =>
             {
+
+
                 // TODO: send user get request
 
                 /*try

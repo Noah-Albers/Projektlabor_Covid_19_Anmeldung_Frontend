@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using projektlabor.noah.planmeldung.datahandling.entities;
 using System;
 using System.Security.Cryptography;
@@ -27,11 +28,17 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// Starts the request
         /// </summary>
         /// <param name="userId">The id of a user</param>
-        public void DoRequest(string host, int port, RSAParameters rsa, int userId) =>
+        public void DoRequest(string host, int port, RSAParameters rsa, int userId)
+        {
+            log.Debug("Starting get status request");
+            log.Critical("UserId=" + userId);
+
+            // Starting the request
             this.DoRequest(host, port, rsa, new JObject()
             {
                 ["id"] = userId
             }, this.OnSuccess,this.OnFailure);
+        }
         
         /// <summary>
         /// Handler for a successfull request
@@ -41,6 +48,8 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         {
             // If the user is logged in
             bool loggedIn = (bool)resp["loggedin"];
+
+            log.Critical("User is logged "+(loggedIn?"in":"out"));
 
             // Checks if the user isn't logged in
             if (!loggedIn)
@@ -65,6 +74,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
         private void OnFailure(string err,JObject resp)
         {
+            log.Debug("Failed to perform request: "+err);
+            log.Critical(resp.ToString(Formatting.None));
+
             // Checks if the error is the userid
             if (err.Equals("user"))
                 // Executes the unknow user id

@@ -43,7 +43,7 @@ namespace projektlabor.noah.planmeldung.datahandling.entities
         }
         public override string ToString()
         {
-            return $"{this.Firstname} {this.Lastname}";
+            return $"{this.Id} {this.Firstname} {this.Lastname}";
         }
 
         protected override Dictionary<string, FieldInfo> Entrys()

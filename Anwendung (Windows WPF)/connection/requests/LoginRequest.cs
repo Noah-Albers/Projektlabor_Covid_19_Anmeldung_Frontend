@@ -25,10 +25,21 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// Starts the request
         /// </summary>
         /// <param name="userId">The id of a user</param>
-        public void DoRequest(string host, int port, RSAParameters rsa, int userId) =>
-            this.DoRequest(host, port, rsa, new JObject() {
+        public void DoRequest(string host, int port, RSAParameters rsa, int userId)
+        {
+            log.Debug("Starting request to login user");
+            log.Critical("Userid=" + userId);
+
+            // Starts the request
+            this.DoRequest(host, port, rsa, new JObject()
+            {
                 ["id"] = userId
-            }, _ => this.onSuccessfullLogin?.Invoke(), this.OnFailure);
+            }, _ =>
+            {
+                log.Debug("Login was successfull");
+                this.onSuccessfullLogin?.Invoke();
+            }, this.OnFailure);
+        }
 
         /// <summary>
         /// Error handler
@@ -36,6 +47,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
         private void OnFailure(string err, JObject resp)
         {
+            log.Debug("Failed to login user: "+err);
+            log.Critical(resp);
+
             switch (err)
             {
                 // Server error (Database error eg. unreachable)

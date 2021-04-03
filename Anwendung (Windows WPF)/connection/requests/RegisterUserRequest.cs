@@ -51,6 +51,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="userId">The id of the user that shall be loged out</param>
         public void DoRequest(string host, int port, RSAParameters rsa, UserEntity user)
         {
+            log.Debug("Starting request to register a new user.");
+            log.Critical(user.ToString());
+
             // The object that will hold the request
             JObject request = new JObject();
 
@@ -60,11 +63,17 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 user.Save(request, REGISTER_ENTRYS, OPTIONAL_REGISTER_ENTRYS);
             }catch(RequiredEntitySerializeException e)
             {
+                log.Warn("Failed to serialize entity. Missing value.");
+                log.Critical("Missing=" + e.KeyName);
+
                 this.onMissingValue?.Invoke(e.KeyName);
                 return;
             }
             catch(EntitySerializeException e)
             {
+                log.Warn("Invalid input or unknown error while serializing entity.");
+                log.Critical("Parameter=" + e.KeyName);
+
                 this.onInvalidInputOrUnknownError?.Invoke(e.KeyName);
                 return;
             }
@@ -72,8 +81,14 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             // Starts the request
             this.DoRequest(host, port, rsa, request, resp=>
             {
+                // Gets the id
+                int id = (int)resp["id"];
+
+                log.Debug("Successfully registered a new user");
+                log.Critical("New userid: " + id);
+
                 // Executes the success handler with the received id
-                this.onSuccess?.Invoke((int)resp["id"]);
+                this.onSuccess?.Invoke(id);
             }, this.OnFailure);
         }
 
@@ -83,6 +98,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
         private void OnFailure(string err,JObject resp)
         {
+            log.Debug("Failed to register user: "+err);
+            log.Critical(resp);
+
             // Checks the error
             switch (err)
             {
