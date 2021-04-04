@@ -34,25 +34,6 @@ namespace projektlabor.noah.planmeldung.windows
         #region Event-handlers
 
         /// <summary>
-        /// Executes when the database fails to deliver the user informations for the available users
-        /// </summary>
-        private void OnLoginUserSelectError(Exception ex)
-        {
-            // Checks if the exception is a mysql exception
-            if (ex.GetType() == typeof(MySqlException))
-                // Displays the error
-                this.DisplayInfo(
-                    Lang.main_database_error_connect_title,
-                    Lang.main_database_error_connect_user_text,
-                    this.CloseOverlay,
-                    Lang.main_popup_close
-                );
-            else
-                // Displays the error
-                this.DisplayFatalError();
-        }
-
-        /// <summary>
         /// Executes when the user selects another user with the login form
         /// </summary>
         /// <param name="user">The selected user</param>
@@ -78,15 +59,14 @@ namespace projektlabor.noah.planmeldung.windows
             request.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey,user.Id.Value);
 
             // Executes if the user could not be found?!
-            void OnUserNotFound() => this.Dispatcher.Invoke(() =>
+            void OnUserNotFound() =>
                 // Displays an info window
-                new AcknowledgmentWindow(
+                this.DisplayInfo(
                     Lang.main_login_get_error_not_found_title,
                     Lang.main_login_get_error_not_found_text,
-                    null,
+                    this.CloseOverlay,
                     Lang.main_login_error_button_ok
-                 ).ShowDialog()
-             );
+                 );
 
             // Executes once a valid response has been received
             // Ts is null if the user is not logged in
@@ -155,12 +135,12 @@ namespace projektlabor.noah.planmeldung.windows
                 // Clears the form
                 this.LoginResetForm();
                 // Displays the info
-                new AcknowledgmentWindow(
+                this.DisplayInfo(
                     Lang.main_login_login_error_not_found_title,
                     Lang.main_login_login_error_not_found_text,
-                    null,
+                    this.CloseOverlay,
                     Lang.main_login_error_button_ok
-                 ).ShowDialog();
+                 );
             });
 
             // Executes if the user is still loged in?!
@@ -171,12 +151,12 @@ namespace projektlabor.noah.planmeldung.windows
                 // Clears the form
                 this.LoginResetForm();
                 // Displays the info
-                new AcknowledgmentWindow(
+                this.DisplayInfo(
                     Lang.main_login_login_error_loggedin_title,
                     Lang.main_login_login_error_loggedin_text,
-                    null,
+                    this.CloseOverlay,
                     Lang.main_login_error_button_ok
-                 ).ShowDialog();
+                 );
             });
         });
 
@@ -221,12 +201,12 @@ namespace projektlabor.noah.planmeldung.windows
                 // Clears the form
                 this.LoginResetForm();
                 // Displays the info
-                new AcknowledgmentWindow(
+                this.DisplayInfo(
                     Lang.main_login_logout_error_not_found_title,
                     Lang.main_login_logout_error_not_found_text,
-                    null,
+                    this.CloseOverlay,
                     Lang.main_login_error_button_ok
-                 ).ShowDialog();
+                 );
             });
 
             // Executes if the user is still loged in?!
@@ -237,12 +217,12 @@ namespace projektlabor.noah.planmeldung.windows
                 // Clears the form
                 this.LoginResetForm();
                 // Displays the info
-                new AcknowledgmentWindow(
+                this.DisplayInfo(
                     Lang.main_login_logout_error_loggedout_title,
                     Lang.main_login_logout_error_loggedout_text,
-                    null,
+                    this.CloseOverlay,
                     Lang.main_login_error_button_ok
-                 ).ShowDialog();
+                 );
             });
         });
 

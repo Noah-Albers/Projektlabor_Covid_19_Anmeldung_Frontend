@@ -55,21 +55,21 @@ namespace projektlabor.noah.planmeldung.windows
         /// <summary>
         /// Handler if a request has an I/O error
         /// </summary>
-        private void OnRequestErrorIO() => this.Dispatcher.Invoke(()=>
+        private void OnRequestErrorIO()
         {
-            // Creates the acknowledgment window and show it
-            new AcknowledgmentWindow(
+            // Displays the io error
+            this.DisplayInfo(
                 Lang.main_request_error_io_title,
                 Lang.main_request_error_io_info,
-                null,
+                this.CloseOverlay,
                 Lang.main_request_error_button
-            ).ShowDialog();
-        });
+            );
+        }
 
         /// <summary>
         /// Handler if a request returned that the preset handler does not exist on the remote server.
         /// </summary>
-        private void OnRequestErrorNonsense(NonsensicalError err) => this.Dispatcher.Invoke(() =>
+        private void OnRequestErrorNonsense(NonsensicalError err)
         {
             // Gets the language key of the error
             //   Gets the attribute for the langauge as an enum property (Lang)
@@ -79,14 +79,14 @@ namespace projektlabor.noah.planmeldung.windows
             // Gets the info
             string info = Lang.ResourceManager.GetString($"main.request.error.technical.{langKey}.text", Lang.Culture);
 
-            // Creates the acknowledgment window and show it
-            new AcknowledgmentWindow(
+            // Displays the special error
+            this.DisplayInfo(
                 Lang.main_request_error_technical_title,
                 Lang.main_request_error_technical_text + info,
-                null,
+                this.CloseOverlay,
                 Lang.main_request_error_button
-            ).ShowDialog();
-        });
+            );
+        }
 
         #endregion
 
