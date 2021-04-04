@@ -124,7 +124,8 @@
     <value>Es ist ein Fehler beim durchführen von wichtigen Hintergrundprozessen aufgetreten.</value>
   </data>
   <data name="backup.error.authenticate" xml:space="preserve">
-    <value>Die Authentizierung mit dem Remoteserver ist Fehlgeschlagen und das Backup konnte nicht hochgeladen werden. Bitte überprüfen sie, dass die angegebenen Daten stimmen.</value>
+    <value>Die Authentizierung mit dem Remoteserver ist Fehlgeschlagen und das Backup
+konnte nicht hochgeladen werden. Bitte überprüfen sie, dass die angegebenen Daten stimmen.</value>
   </data>
   <data name="backup.error.disclaimer" xml:space="preserve">
     <value>Wenn Sie diesen Fehler sehen, melden Sie ihn bitte einem Projektlaborianer.
@@ -134,7 +135,8 @@
     <value>Wiederholen</value>
   </data>
   <data name="backup.error.upload" xml:space="preserve">
-    <value>Der Remoteserver konnte nicht erreicht werden und das Backup konnte nicht hochgeladen werden. Bitte clicken Sie auf wiederholen um den Upload erneut zu versuchen.</value>
+    <value>Der Remoteserver konnte nicht erreicht werden und das Backup konnte nicht hochgeladen werden.
+Bitte clicken Sie auf wiederholen um den Upload erneut zu versuchen.</value>
   </data>
   <data name="backup.logout" xml:space="preserve">
     <value>Melde alle Benutzer ab...</value>
@@ -158,7 +160,10 @@
     <value>Rohmaterial Kopieren</value>
   </data>
   <data name="config.currupted.info" xml:space="preserve">
-    <value>Ihr eingegebener Schlüssel ist richtig und die Datei konnte geladen werden. Leider das Dateiformat kapput und kann nicht geladen werden. Möchten Sie eine neue Konifiguration anlegen? Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopieren.</value>
+    <value>Ihr eingegebener Schlüssel ist richtig und die Datei konnte geladen werden.
+Leider das Dateiformat kapput und kann nicht geladen werden.
+Möchten Sie eine neue Konifiguration anlegen?
+Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopieren.</value>
   </data>
   <data name="config.currupted.no" xml:space="preserve">
     <value>Abbrechen</value>
@@ -350,7 +355,8 @@
     <value>Registrieren</value>
   </data>
   <data name="main.register.error.name" xml:space="preserve">
-    <value>Der Benutzername wird bereits verwendet. Bitte geben Sie ihren Namen an. Oder ändern Sie ihn etwas ab um Verwirrung zu vermeiden.</value>
+    <value>Der Benutzername wird bereits verwendet.
+Bitte geben Sie ihren Namen an. Oder ändern Sie ihn etwas ab um Verwirrung zu vermeiden.</value>
   </data>
   <data name="main.register.error.rfid" xml:space="preserve">
     <value>Dieser RFIC-Code wird bereits verwendet. Bitte verwenden Sie einen anderen Code oder eine andere Karte.</value>
@@ -369,6 +375,50 @@
   </data>
   <data name="main.register.title" xml:space="preserve">
     <value>Registrieren</value>
+  </data>
+  <data name="main.request.error.auth.info" xml:space="preserve">
+    <value>Es ist wärend der Verbindung zum Remoteserver ein Verifizierungsfehler aufgetreten. Bitte versuchen Sie es erneut. Sollte es weiterhin nicht funktionieren, geben Sie bitte einem Projektlaborianer bescheid.</value>
+  </data>
+  <data name="main.request.error.auth.title" xml:space="preserve">
+    <value>Verifizierungsfehler</value>
+  </data>
+  <data name="main.request.error.button" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="main.request.error.handler.info" xml:space="preserve">
+    <value>Die Serverseitige-schnittstelle konnte nicht gefunden werden. Bitte sagen Sie einem Projektlaborianer bescheid.</value>
+  </data>
+  <data name="main.request.error.handler.title" xml:space="preserve">
+    <value>Handler nicht bekannt</value>
+  </data>
+  <data name="main.request.error.io.info" xml:space="preserve">
+    <value>Die Verbindung zum Remoteserver konnte nicht hergestellt werden oder wurde verloren. Bitte versuchen Sie es erneut. Sollte es weiterhin nicht funktionieren, geben Sie bitte einem Projektlaborianer bescheid.</value>
+  </data>
+  <data name="main.request.error.io.title" xml:space="preserve">
+    <value>Verbindung verloren</value>
+  </data>
+  <data name="main.request.error.technical.authkey.text" xml:space="preserve">
+    <value>Es ist ein Schlüsselfehler aufgetreten.</value>
+  </data>
+  <data name="main.request.error.technical.authserver.text" xml:space="preserve">
+    <value>Der Server hat einen Auth-fehler zurückgegeben.</value>
+  </data>
+  <data name="main.request.error.technical.handler.text" xml:space="preserve">
+    <value>Der Server hat einen Handler-fehler zurückgegeben.</value>
+  </data>
+  <data name="main.request.error.technical.text" xml:space="preserve">
+    <value>Es ist ein technischer Fehler aufgetreten, bitte geben Sie einem Projektlaborianer bescheid.
+Beschreibung:
+</value>
+  </data>
+  <data name="main.request.error.technical.title" xml:space="preserve">
+    <value>Technischer Fehler</value>
+  </data>
+  <data name="main.request.error.unknown.info" xml:space="preserve">
+    <value>Es ist eine unbekannter Fehler aufgetreten. Bitte geben Sie einem Projektlaborianer bescheid.</value>
+  </data>
+  <data name="main.request.error.unknown.title" xml:space="preserve">
+    <value>Unbekannter Fehler</value>
   </data>
   <data name="main.rfid.error.loading.text" xml:space="preserve">
     <value>Es konnte kein Benutzer mit dieser RFID gefunden werden. Bitte versichern Sie sich, dass Sie die richtige Karte gescannt haben und versuchen Sie erneut die Karte zu scannen. Sollt diese Meldung weiterhin angezeigt werden, fragen Sie einen Projektlaborianer ob er ihrem Profil die RFID-Karte zuweist.</value>

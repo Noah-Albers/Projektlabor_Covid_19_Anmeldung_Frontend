@@ -79,7 +79,8 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Die Authentizierung mit dem Remoteserver ist Fehlgeschlagen und das Backup konnte nicht hochgeladen werden. Bitte überprüfen sie, dass die angegebenen Daten stimmen..
+        ///   Looks up a localized string similar to Die Authentizierung mit dem Remoteserver ist Fehlgeschlagen und das Backup
+        ///konnte nicht hochgeladen werden. Bitte überprüfen sie, dass die angegebenen Daten stimmen..
         /// </summary>
         public static string backup_error_authenticate {
             get {
@@ -107,7 +108,8 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Der Remoteserver konnte nicht erreicht werden und das Backup konnte nicht hochgeladen werden. Bitte clicken Sie auf wiederholen um den Upload erneut zu versuchen..
+        ///   Looks up a localized string similar to Der Remoteserver konnte nicht erreicht werden und das Backup konnte nicht hochgeladen werden.
+        ///Bitte clicken Sie auf wiederholen um den Upload erneut zu versuchen..
         /// </summary>
         public static string backup_error_upload {
             get {
@@ -179,7 +181,10 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ihr eingegebener Schlüssel ist richtig und die Datei konnte geladen werden. Leider das Dateiformat kapput und kann nicht geladen werden. Möchten Sie eine neue Konifiguration anlegen? Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopieren..
+        ///   Looks up a localized string similar to Ihr eingegebener Schlüssel ist richtig und die Datei konnte geladen werden.
+        ///Leider das Dateiformat kapput und kann nicht geladen werden.
+        ///Möchten Sie eine neue Konifiguration anlegen?
+        ///Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopieren..
         /// </summary>
         public static string config_currupted_info {
             get {
@@ -755,7 +760,8 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Der Benutzername wird bereits verwendet. Bitte geben Sie ihren Namen an. Oder ändern Sie ihn etwas ab um Verwirrung zu vermeiden..
+        ///   Looks up a localized string similar to Der Benutzername wird bereits verwendet.
+        ///Bitte geben Sie ihren Namen an. Oder ändern Sie ihn etwas ab um Verwirrung zu vermeiden..
         /// </summary>
         public static string main_register_error_name {
             get {
@@ -814,6 +820,134 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         public static string main_register_title {
             get {
                 return ResourceManager.GetString("main.register.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es ist wärend der Verbindung zum Remoteserver ein Verifizierungsfehler aufgetreten. Bitte versuchen Sie es erneut. Sollte es weiterhin nicht funktionieren, geben Sie bitte einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_request_error_auth_info {
+            get {
+                return ResourceManager.GetString("main.request.error.auth.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifizierungsfehler.
+        /// </summary>
+        public static string main_request_error_auth_title {
+            get {
+                return ResourceManager.GetString("main.request.error.auth.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string main_request_error_button {
+            get {
+                return ResourceManager.GetString("main.request.error.button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Serverseitige-schnittstelle konnte nicht gefunden werden. Bitte sagen Sie einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_request_error_handler_info {
+            get {
+                return ResourceManager.GetString("main.request.error.handler.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handler nicht bekannt.
+        /// </summary>
+        public static string main_request_error_handler_title {
+            get {
+                return ResourceManager.GetString("main.request.error.handler.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Verbindung zum Remoteserver konnte nicht hergestellt werden oder wurde verloren. Bitte versuchen Sie es erneut. Sollte es weiterhin nicht funktionieren, geben Sie bitte einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_request_error_io_info {
+            get {
+                return ResourceManager.GetString("main.request.error.io.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verbindung verloren.
+        /// </summary>
+        public static string main_request_error_io_title {
+            get {
+                return ResourceManager.GetString("main.request.error.io.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es ist ein Schlüsselfehler aufgetreten..
+        /// </summary>
+        public static string main_request_error_technical_authkey_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.authkey.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Server hat einen Auth-fehler zurückgegeben..
+        /// </summary>
+        public static string main_request_error_technical_authserver_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.authserver.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Server hat einen Handler-fehler zurückgegeben..
+        /// </summary>
+        public static string main_request_error_technical_handler_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.handler.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es ist ein technischer Fehler aufgetreten, bitte geben Sie einem Projektlaborianer bescheid.
+        ///Beschreibung:
+        ///.
+        /// </summary>
+        public static string main_request_error_technical_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technischer Fehler.
+        /// </summary>
+        public static string main_request_error_technical_title {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es ist eine unbekannter Fehler aufgetreten. Bitte geben Sie einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_request_error_unknown_info {
+            get {
+                return ResourceManager.GetString("main.request.error.unknown.info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unbekannter Fehler.
+        /// </summary>
+        public static string main_request_error_unknown_title {
+            get {
+                return ResourceManager.GetString("main.request.error.unknown.title", resourceCulture);
             }
         }
         

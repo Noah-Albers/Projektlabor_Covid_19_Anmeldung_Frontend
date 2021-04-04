@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
+using System.Linq;
 using System.Windows;
 
 namespace projektlabor.noah.planmeldung.utils
@@ -48,6 +50,33 @@ namespace projektlabor.noah.planmeldung.utils
             writer.Flush();
             stream.Position = 0;
             return stream;
+        }
+
+        /// <summary>
+        /// Searches for a specific attribute of a field on a class
+        /// </summary>
+        /// <param name="value">The enum that shall be searched</param>
+        /// <param name="verifier">A verifier function that can be set optionally. The first attribute that matches will be choosen.</param>
+        /// <returns>Null if no corresponding attribute got found, otherwise the first matching attribute</returns>
+        public static ATTR GetAttribute<ATTR>(this Enum value, Func<ATTR, bool> verifier = null) where ATTR : Attribute
+        {
+            // Ensures that the verifier is set
+            if (verifier == null)
+                verifier = _ => true;
+
+            // Gets the type of the enum
+            Type valueType = value.GetType();
+            Type typeATTR = typeof(ATTR);
+
+            // Gets the member
+            MemberInfo member = valueType.GetMember(value.ToString()).FirstOrDefault(m => m.DeclaringType == valueType);
+
+            // Gets all attributes from the field
+            return member.GetCustomAttributes(typeATTR, false)
+                // Casts the values
+                .Select(x=>(ATTR)x)
+                // Filters the attribute that matches
+                .FirstOrDefault(x => verifier((ATTR)x));
         }
     }
 }

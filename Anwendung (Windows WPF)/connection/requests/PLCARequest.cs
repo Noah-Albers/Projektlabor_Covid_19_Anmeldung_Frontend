@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Pl_Covid_19_Anmeldung.connection.exceptions;
+using Pl_Covid_19_Anmeldung.utils;
+using projektlabor.noah.planmeldung.Properties.langs;
 using System;
 using System.IO;
 using System.Net.Sockets;
@@ -13,16 +15,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         // Reference to the logger for the program
         protected static Logger log = PLCA.LOGGER;
 
-        // Executer when an handshake error occurres
-        public Action<HandshakeExceptionType> onErrorHandshake;
         // Executer when an io error occurres
         public Action onErrorIO;
         // Executer when an unknow error occurres
         public Action onUnknownError;
-        // Executer when a auth error occurres
-        public Action onAuthError;
-        // Executer when the server returns that the handler wasn't found (May server and client have a different version?)
-        public Action onHandlerError;
+        // Executer when the server returns a known handler but one that does not make sense. Eg. a permission error where to applicatation can by default only request resources where the permission is given
+        public Action<NonsensicalError> onNonsenseError;
 
         /// <summary>
         /// The endpoint id at the server. Can be seen like a path in http
@@ -45,10 +43,10 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             switch (exc)
             {
                 case "auth":
-                    this.onAuthError?.Invoke();
+                    this.onNonsenseError?.Invoke(NonsensicalError.AUTH_SERVER);
                     break;
                 case "handler":
-                    this.onHandlerError?.Invoke();
+                    this.onNonsenseError?.Invoke(NonsensicalError.HANDLER);
                     break;
                 default:
                     this.onUnknownError?.Invoke();
@@ -122,7 +120,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             }
             catch (HandshakeException e)
             {
-                this.onErrorHandshake?.Invoke(e.Type);
+                this.onNonsenseError?.Invoke(NonsensicalError.AUTH_KEY);
             }
             catch (Exception e)
             {
@@ -140,5 +138,19 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <EnumProperty>lang - the name of the enum value that can be used to grab a certaint information from the Language file.</EnumProperty>
+    public enum NonsensicalError
+    {   
+        [EnumProperty("lang","authserver")]
+        AUTH_SERVER,
+        [EnumProperty("lang","handler")]
+        HANDLER,
+        [EnumProperty("lang","authkey")]
+        AUTH_KEY
     }
 }

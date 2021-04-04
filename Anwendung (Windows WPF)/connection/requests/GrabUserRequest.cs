@@ -18,12 +18,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <summary>
         /// Starts the request
         /// </summary>
-        public void DoRequest(string host, int port, RSAParameters rsa)
+        public void DoRequest(string host, int port, RSAParameters privateKey)
         {
             log.Debug("Starting request to fetch all users (Simple version)");
 
             // Starts the request
-            this.DoRequest(host, port, rsa, new JObject(), OnReceive, (_, _2) => this.onUnknownError?.Invoke());
+            this.DoRequest(host, port, privateKey, new JObject(), OnReceive, (_, _2) => this.onUnknownError?.Invoke());
         }
 
         private void OnReceive(JObject resp)
@@ -43,8 +43,8 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 try
                 {
                     // Tries to load the user
-                    var usr = new SimpleUserEntity();
-                    usr.Load((JObject)rawUserArr[i], SimpleUserEntity.ENTRYS_LIST);
+                    users[i] = new SimpleUserEntity();
+                    users[i].Load((JObject)rawUserArr[i], SimpleUserEntity.ENTRYS_LIST);
                 }
                 catch
                 {

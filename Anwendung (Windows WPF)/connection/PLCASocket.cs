@@ -72,6 +72,8 @@ namespace Pl_Covid_19_Anmeldung.connection
         /// <summary>
         /// Does the secure handshake to establish a secure connection with the server
         /// </summary>
+        /// <exception cref="HandshakeException">If the returned message coult not be decrypted (Wrong key is given)</exception>
+        /// <exception cref="IOException">If anything went wrong with the I/O</exception>
         private void DoHandshake()
         {
             // Stores the received data for the aes key (Still encrypted using the rsa-key)
@@ -95,8 +97,7 @@ namespace Pl_Covid_19_Anmeldung.connection
             {
                 this.logger.Debug("Connection closed (I/O)");
 
-                // Failed to receive the key (or failed to send the id)
-                throw new HandshakeException(HandshakeExceptionType.IO);
+                throw new IOException();
             }
 
             try
@@ -112,13 +113,16 @@ namespace Pl_Covid_19_Anmeldung.connection
                 Array.Copy(decryptedAes, 32, this.aesIv, 0, 16);
 
                 this.logger.Critical("Key=" + string.Join(",", this.aesKey) + " Iv=" + string.Join(",", this.aesIv));
+            } catch(IOException e)
+            {
+                throw e;
             }
             catch
             {
                 this.logger.Debug("Failed to decrypt");
 
                 // Failed to decrypt the aes-key
-                throw new HandshakeException(HandshakeExceptionType.RSA_DECRYPT);
+                throw new HandshakeException();
             }
         }
 

@@ -14,12 +14,12 @@
         Background="Gray">
     <StackPanel>
         <TextBlock
-                x:Name="title"
-                FontSize="14"
-                Foreground="White"
-                Text="DisplayTitle"
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"/>
+            x:Name="title"
+            FontSize="16"
+            Foreground="White"
+            Text="DisplayTitle"
+            Margin="20,10,20,0"
+            HorizontalAlignment="Center"/>
         <Button
             x:Name="button"
             Content="ButtonOk"

@@ -150,6 +150,7 @@
       <DependentUpon>Lang.resx</DependentUpon>
     </Compile>
     <Compile Include="security\SimpleSecurityUtils.cs" />
+    <Compile Include="utils\EnumPropertyAttribute.cs" />
     <Compile Include="windows\requests\AcknowledgmentWindow.xaml.cs">
       <DependentUpon>AcknowledgmentWindow.xaml</DependentUpon>
     </Compile>

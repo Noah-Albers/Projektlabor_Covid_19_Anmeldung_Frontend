@@ -1,11 +1,11 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using projektlabor.noah.planmeldung.datahandling.entities;
-using projektlabor.noah.planmeldung.datahandling;
+using Pl_Covid_19_Anmeldung.connection.requests;
+using Pl_Covid_19_Anmeldung;
 
 namespace projektlabor.noah.planmeldung.windows.mainWindow
 {
@@ -14,11 +14,12 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
     /// </summary>
     public partial class UserSearch : UserControl
     {
-
-        /// <summary>
-        /// Event handler that executes when the fetching for users fails
-        /// </summary>
-        public Action<Exception> OnError { get; set; }
+        // Executer when an io error occurres
+        public Action OnIOError { get; set; }
+        // Executer when an unknow error occurres
+        public Action OnUnknownError { get; set; }
+        // Executer when the server returns a known handler but one that does not make sense. Eg. a permission error where to applicatation can by default only request resources where the permission is given
+        public Action<NonsensicalError> OnNonsenseError { get; set; }
 
         /// <summary>
         /// Event handler that executes when the a user got selected
@@ -57,56 +58,20 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
             // Starts the task
             this.taskFetching = Task.Run(() =>
             {
-
-
-                // TODO: send user get request
-
-                /*try
+                // Creates the request
+                var req = new GrabUserRequest()
                 {
-                    // Gets the users
-                    var users = Database.Instance.GetUsers();
+                    onNonsenseError = this.OnNonsenseError,
+                    onReceive = this.OnReceiveUsers,
+                    onErrorIO = this.OnIOError,
+                    onUnknownError = this.OnUnknownError
+                };
 
-                    // Updates the ui
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        // Removes all previous users
-                        this.List.Items.Clear();
+                // Reference to the config
+                var cfg = PLCA.LOADED_CONFIG;
 
-                        // Appends the new users
-                        foreach (var u in users)
-                        {
-                            // Creates the list item
-                            ListViewItem lvi = new ListViewItem
-                            {
-                                // Creates the display
-                                Content = u,
-                                FontSize = 20,
-                                Foreground = new SolidColorBrush(Colors.White)
-                            };
-
-                            // Appends the user
-                            this.List.Items.Add(lvi);
-                        }
-                        // Shows the user list
-                        this.ViewList.Visibility = Visibility.Visible;
-                        // Hides the loading animation
-                        this.ViewLoading.Visibility = Visibility.Collapsed;
-
-                        this.FieldSearch.Focus();
-                    });
-                }
-                catch (Exception ex)
-                {
-                    // Displays the error
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        // Hides the popup
-                        this.ButtonSelect.IsChecked = false;
-
-                        // Executes the error handler
-                        this.OnError(ex);
-                    });
-                }*/
+                // Starts the request
+                req.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey);
 
                 // Resets the task
                 this.taskFetching = null;
@@ -130,7 +95,7 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
             SimpleUserEntity user = (this.List.SelectedItem as ListViewItem).Content as SimpleUserEntity;
 
             // Executes the handler
-            this.OnSelect(user);
+            this.OnSelect?.Invoke(user);
         }
 
         /// <summary>
@@ -146,8 +111,41 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
 
                 // Checks if the user matches
                 // Shows or hides the user
-                itm.Visibility = (itm.Content as SimpleUserEntity).isMatching(this.FieldSearch.Text) ? Visibility.Visible : Visibility.Collapsed;
+                itm.Visibility = (itm.Content as SimpleUserEntity).IsMatching(this.FieldSearch.Text) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
+
+        /// <summary>
+        /// Executes when the users for get received
+        /// </summary>
+        /// <param name="users">The received users</param>
+        private void OnReceiveUsers(SimpleUserEntity[] users) => this.Dispatcher.Invoke(() =>
+        {
+            // Removes all previous users
+            this.List.Items.Clear();
+
+            // Appends the new users
+            foreach (var u in users)
+            {
+                // Creates the list item
+                ListViewItem lvi = new ListViewItem
+                {
+                    // Creates the display
+                    Content = u,
+                    FontSize = 20,
+                    Foreground = new SolidColorBrush(Colors.White)
+                };
+
+                // Appends the user
+                this.List.Items.Add(lvi);
+            }
+
+            // Shows the user list
+            this.ViewList.Visibility = Visibility.Visible;
+            // Hides the loading animation
+            this.ViewLoading.Visibility = Visibility.Collapsed;
+
+            this.FieldSearch.Focus();
+        });
     }
 }

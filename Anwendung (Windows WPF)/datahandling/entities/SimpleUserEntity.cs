@@ -36,14 +36,14 @@ namespace projektlabor.noah.planmeldung.datahandling.entities
         /// </summary>
         /// <param name="search"></param>
         /// <returns>True if the user matches; else false</returns>
-        public bool isMatching(string search)
+        public bool IsMatching(string search)
         {
             // Checks if the firstname or lastname matches
             return this.ToString().ToLower().Contains(search.ToLower());
         }
         public override string ToString()
         {
-            return $"{this.Id} {this.Firstname} {this.Lastname}";
+            return $"{this.Firstname} {this.Lastname}";
         }
 
         protected override Dictionary<string, FieldInfo> Entrys()
