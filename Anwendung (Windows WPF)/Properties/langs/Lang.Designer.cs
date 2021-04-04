@@ -625,6 +625,15 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string main_login_error_button_ok {
+            get {
+                return ResourceManager.GetString("main.login.error.button.ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verlassen.
         /// </summary>
         public static string main_login_field_end {
@@ -657,6 +666,26 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         public static string main_login_fields_firstname {
             get {
                 return ResourceManager.GetString("main.login.fields.firstname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Benutzer konnte nicht gefunden werden.
+        ///Bitte versuchen Sie erneut ihren Benutzer auszuwählen.
+        ///Sollte weiterhin dies Meldung kommen, geben Sie bitte einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_login_get_error_not_found_text {
+            get {
+                return ResourceManager.GetString("main.login.get.error.not_found.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Benutzer nicht gefunden.
+        /// </summary>
+        public static string main_login_get_error_not_found_title {
+            get {
+                return ResourceManager.GetString("main.login.get.error.not_found.title", resourceCulture);
             }
         }
         

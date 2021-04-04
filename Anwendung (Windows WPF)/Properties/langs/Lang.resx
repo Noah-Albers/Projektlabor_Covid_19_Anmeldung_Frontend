@@ -309,6 +309,9 @@ Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopier
   <data name="main.login.button.start" xml:space="preserve">
     <value>Anmelden</value>
   </data>
+  <data name="main.login.error.button.ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="main.login.field.end" xml:space="preserve">
     <value>Verlassen</value>
   </data>
@@ -320,6 +323,14 @@ Unterhalb können sie auch das Rohmaterial, welches geladen werden konnte Kopier
   </data>
   <data name="main.login.fields.firstname" xml:space="preserve">
     <value>Vorname</value>
+  </data>
+  <data name="main.login.get.error.not_found.text" xml:space="preserve">
+    <value>Der Benutzer konnte nicht gefunden werden.
+Bitte versuchen Sie erneut ihren Benutzer auszuwählen.
+Sollte weiterhin dies Meldung kommen, geben Sie bitte einem Projektlaborianer bescheid.</value>
+  </data>
+  <data name="main.login.get.error.not_found.title" xml:space="preserve">
+    <value>Benutzer nicht gefunden</value>
   </data>
   <data name="main.login.loading" xml:space="preserve">
     <value>Anmelden...</value>

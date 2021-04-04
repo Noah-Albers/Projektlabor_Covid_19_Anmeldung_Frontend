@@ -1,4 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
+using Pl_Covid_19_Anmeldung;
+using Pl_Covid_19_Anmeldung.connection.requests;
+using Pl_Covid_19_Anmeldung.windows.requests;
 using projektlabor.noah.planmeldung.datahandling;
 using projektlabor.noah.planmeldung.datahandling.entities;
 using projektlabor.noah.planmeldung.Properties.langs;
@@ -58,12 +61,38 @@ namespace projektlabor.noah.planmeldung.windows
         {
             // Displays the loading
             this.DisplayLoading(Lang.main_login_select_loading);
-            // TODO: send login request
-            /*try
-            {
-                // Gets the remaining data
-                var ts = Database.Instance.GetOpenTimeSpentFromUser(user.Id);
 
+            // Creates the request
+            var request = new GetStatusRequest()
+            {
+                OnErrorIO = this.OnRequestErrorIO,
+                OnNonsenseError = this.OnRequestErrorNonsense,
+                OnUserNotFound = OnUserNotFound,
+                OnUserLoggedIn = OnUpdate,
+                OnUserNotLoggedIn = ()=>OnUpdate(null)
+            };
+
+            // Reference to the config
+            var cfg = PLCA.LOADED_CONFIG;
+
+            // Starts the request
+            request.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey,user.Id.Value);
+
+            // Executes if the user could not be found?!
+            void OnUserNotFound() => this.Dispatcher.Invoke(() =>
+                // Displays an info window
+                new AcknowledgmentWindow(
+                    Lang.main_login_get_error_not_found_title,
+                    Lang.main_login_get_error_not_found_text,
+                    null,
+                    Lang.main_login_error_button_ok
+                 ).ShowDialog()
+             );
+
+            // Executes once a valid response has been received
+            // Ts is null if the user is not logged in
+            void OnUpdate(TimespentEntity ts) => this.Dispatcher.Invoke(() =>
+            {
                 // Checks if no unclosed sessions have been found
                 if (ts == null)
                     // Creates a new login
@@ -75,34 +104,15 @@ namespace projektlabor.noah.planmeldung.windows
                     // Updates the stop-time
                     ts.Stop = DateTime.Now;
 
-                // Updates the form
-                this.Dispatcher.Invoke(() =>
-                {
-                    // Resets the form
-                    this.LoginResetForm();
+                // Resets the form
+                this.LoginResetForm();
 
-                    // Displays the login form
-                    this.LoginDisplayUser(user, ts);
+                // Displays the login form
+                this.LoginDisplayUser(user, ts);
 
-                    // Closes the loading
-                    this.CloseOverlay();
-                });
-            }
-            catch (MySqlException)
-            {
-                // Displays the error
-                this.DisplayInfo(
-                    Lang.main_database_error_connect_title,
-                    Lang.main_database_error_connect_user_text,
-                    this.CloseOverlay,
-                    Lang.main_popup_close
-                );
-            }
-            catch
-            {
-                // Displays the error
-                this.DisplayFatalError();
-            }*/
+                // Closes the loading
+                this.CloseOverlay();
+            });
         });
 
         /// <summary>

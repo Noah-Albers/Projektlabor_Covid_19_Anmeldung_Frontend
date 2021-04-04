@@ -87,7 +87,6 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 default:
                     this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                     break;
-
             }
         }
     }
