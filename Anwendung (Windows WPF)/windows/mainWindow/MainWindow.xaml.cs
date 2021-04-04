@@ -51,16 +51,6 @@ namespace projektlabor.noah.planmeldung.windows
         #region Event-handlers
 
         #region Event-handlers Request-errors
-        /*
-         // Executer when a wrong rsa-key is given
-        public Action onErrorAuth;
-        // Executer when an io error occurres
-        public Action onErrorIO;
-        // Executer when an unknow error occurres
-        public Action onUnknownError;
-        // Executer when the server returns a known handler but one that does not make sense. Eg. a permission error where to applicatation can by default only request resources where the permission is given
-        public Action<NonsensicalError> onNonsenseError;
-        */
 
         /// <summary>
         /// Handler if a request has an I/O error
@@ -77,27 +67,13 @@ namespace projektlabor.noah.planmeldung.windows
         });
 
         /// <summary>
-        /// Handler if a request has an unknown error
-        /// </summary>
-        private void OnRequestErrorUnknown() => this.Dispatcher.Invoke(() =>
-        {
-            // Creates the acknowledgment window and show it
-            new AcknowledgmentWindow(
-                Lang.main_request_error_unknown_title,
-                Lang.main_request_error_unknown_info,
-                null,
-                Lang.main_request_error_button
-            ).ShowDialog();
-        });
-
-        /// <summary>
         /// Handler if a request returned that the preset handler does not exist on the remote server.
         /// </summary>
         private void OnRequestErrorNonsense(NonsensicalError err) => this.Dispatcher.Invoke(() =>
         {
             // Gets the language key of the error
-            //  Gets the attribute for the langauge as an enum property (Lang)
-            //  Gets the value of the value from that enum property
+            //   Gets the attribute for the langauge as an enum property (Lang)
+            //   Gets the value of the value from that enum property
             string langKey = err.GetAttribute<EnumProperty>(x => x.Key.Equals("Lang")).GetValue<string>();
 
             // Gets the info

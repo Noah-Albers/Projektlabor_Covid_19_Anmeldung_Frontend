@@ -8,16 +8,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 {
     class RegisterUserRequest : PLCARequest
     {
-        // If the server has an error (Database not reachable or smth)
-        public Action onServerError;
         // Server returned, that we have seen an invlid user
-        public Action onInvalidUserServer;
-        // If eigther an unexpected user input got found or an unknown exception occurred
-        public Action<string> onInvalidInputOrUnknownError;
+        public Action OnInvalidUserServer;
         // If a required value is missing
-        public Action<string> onMissingValue;
+        public Action<string> OnMissingValue;
         // If a user with the name and lastname already exists
-        public Action onUserAlredyExists;
+        public Action OnUserAlredyExists;
 
         // If the registration was successfull (Holds the user's id)
         public Action<int> onSuccess;
@@ -63,18 +59,16 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 user.Save(request, REGISTER_ENTRYS, OPTIONAL_REGISTER_ENTRYS);
             }catch(RequiredEntitySerializeException e)
             {
-                log.Warn("Failed to serialize entity. Missing value.");
-                log.Critical("Missing=" + e.KeyName);
+                log.Warn("Failed to serialize entity. Missing value. Missing = " + e.KeyName);
 
-                this.onMissingValue?.Invoke(e.KeyName);
+                this.OnNonsenseError?.Invoke(NonsensicalError.LESS_DATA);
                 return;
             }
             catch(EntitySerializeException e)
             {
-                log.Warn("Invalid input or unknown error while serializing entity.");
-                log.Critical("Parameter=" + e.KeyName);
+                log.Warn("Invalid input or unknown error while serializing entity. Parameter="+ e.KeyName);
 
-                this.onInvalidInputOrUnknownError?.Invoke(e.KeyName);
+                this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                 return;
             }
 
@@ -105,16 +99,16 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             switch (err)
             {
                 case "database":
-                    this.onServerError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.SERVER_DATABASE);
                     break;
                 case "user":
-                    this.onInvalidUserServer?.Invoke();
+                    this.OnInvalidUserServer?.Invoke();
                     break;
                 case "duplicated":
-                    this.onUserAlredyExists?.Invoke();
+                    this.OnUserAlredyExists?.Invoke();
                     break;
                 default:
-                    this.onUnknownError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                     break;
 
             }

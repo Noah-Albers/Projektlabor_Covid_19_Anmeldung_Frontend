@@ -91,7 +91,7 @@
                                     <Image Source="../../rsc/Icon_DeleteButton.png"/>
                                 </Button>
 
-                                <own:UserSearch HorizontalAlignment="Left" OnSelect="OnLoginUserSelectSelect" OnIOError="OnRequestErrorIO" OnNonsenseError="OnRequestErrorNonsense" OnUnknownError="OnRequestErrorUnknown"/>
+                                <own:UserSearch HorizontalAlignment="Left" OnSelect="OnLoginUserSelectSelect" OnIOError="OnRequestErrorIO" OnNonsenseError="OnRequestErrorNonsense"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>

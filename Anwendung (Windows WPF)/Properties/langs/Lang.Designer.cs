@@ -905,11 +905,29 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auf dem Server ist ein Fehler mit der Datenbank aufgetreten..
+        /// </summary>
+        public static string main_request_error_technical_database_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.database.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Der Server hat einen Handler-fehler zurückgegeben..
         /// </summary>
         public static string main_request_error_technical_handler_text {
             get {
                 return ResourceManager.GetString("main.request.error.technical.handler.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Server zu wenig oder falsche Daten gesendet um die Anfrage zu verarbeiten..
+        /// </summary>
+        public static string main_request_error_technical_lessreturn_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.lessreturn.text", resourceCulture);
             }
         }
         
@@ -930,6 +948,15 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         public static string main_request_error_technical_title {
             get {
                 return ResourceManager.GetString("main.request.error.technical.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es ist ein unbekannter Fehler aufgetreten. Bitte logs anschauen und ggf. kritisches Loggen benutzen..
+        /// </summary>
+        public static string main_request_error_technical_unknown_text {
+            get {
+                return ResourceManager.GetString("main.request.error.technical.unknown.text", resourceCulture);
             }
         }
         

@@ -16,11 +16,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         protected static Logger log = PLCA.LOGGER;
 
         // Executer when an io error occurres
-        public Action onErrorIO;
-        // Executer when an unknow error occurres
-        public Action onUnknownError;
+        public Action OnErrorIO;
         // Executer when the server returns a known handler but one that does not make sense. Eg. a permission error where to applicatation can by default only request resources where the permission is given
-        public Action<NonsensicalError> onNonsenseError;
+        public Action<NonsensicalError> OnNonsenseError;
 
         /// <summary>
         /// The endpoint id at the server. Can be seen like a path in http
@@ -43,13 +41,13 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             switch (exc)
             {
                 case "auth":
-                    this.onNonsenseError?.Invoke(NonsensicalError.AUTH_SERVER);
+                    this.OnNonsenseError?.Invoke(NonsensicalError.AUTH_SERVER);
                     break;
                 case "handler":
-                    this.onNonsenseError?.Invoke(NonsensicalError.HANDLER);
+                    this.OnNonsenseError?.Invoke(NonsensicalError.HANDLER);
                     break;
                 default:
-                    this.onUnknownError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                     break;
             }
         }
@@ -120,29 +118,26 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             }
             catch (HandshakeException e)
             {
-                this.onNonsenseError?.Invoke(NonsensicalError.AUTH_KEY);
+                this.OnNonsenseError?.Invoke(NonsensicalError.AUTH_KEY);
             }
             catch (Exception e)
             {
                 // Checks if the error is an io-error
                 if (e is IOException || e is SocketException)
                     // Handle the io-error
-                    this.onErrorIO?.Invoke();
+                    this.OnErrorIO?.Invoke();
                 else
                 {
                     log.Debug("Unknown error occurred while performing the request");
                     log.Critical(e.Message);
 
                     // Unknown error
-                    this.onUnknownError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                 }
             }
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     /// <EnumProperty>lang - the name of the enum value that can be used to grab a certaint information from the Language file.</EnumProperty>
     public enum NonsensicalError
     {   
@@ -151,6 +146,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         [EnumProperty("lang","handler")]
         HANDLER,
         [EnumProperty("lang","authkey")]
-        AUTH_KEY
+        AUTH_KEY,
+        [EnumProperty("lang","database")]
+        SERVER_DATABASE,
+        [EnumProperty("lang","unknown")]
+        UNKNOWN,
+        [EnumProperty("lang","lessreturn")]
+        LESS_DATA
     }
 }

@@ -16,8 +16,6 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
     {
         // Executer when an io error occurres
         public Action OnIOError { get; set; }
-        // Executer when an unknow error occurres
-        public Action OnUnknownError { get; set; }
         // Executer when the server returns a known handler but one that does not make sense. Eg. a permission error where to applicatation can by default only request resources where the permission is given
         public Action<NonsensicalError> OnNonsenseError { get; set; }
 
@@ -61,10 +59,9 @@ namespace projektlabor.noah.planmeldung.windows.mainWindow
                 // Creates the request
                 var req = new GrabUserRequest()
                 {
-                    onNonsenseError = this.OnNonsenseError,
+                    OnNonsenseError = this.OnNonsenseError,
                     onReceive = this.OnReceiveUsers,
-                    onErrorIO = this.OnIOError,
-                    onUnknownError = this.OnUnknownError
+                    OnErrorIO = this.OnIOError
                 };
 
                 // Reference to the config

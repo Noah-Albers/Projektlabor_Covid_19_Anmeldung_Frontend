@@ -6,12 +6,10 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 {
     class LoginRequest : PLCARequest
     {
-        // If the server has an error (Database not reachable or smth)
-        public Action onServerError;
         // If the user is already logged in
-        public Action onUnauthorizedError;
+        public Action OnUnauthorizedError;
         // If the user hasn't been found
-        public Action onUserNotFound;
+        public Action OnUserNotFound;
 
         // If the user's login was successfull
         public Action onSuccessfullLogin;
@@ -54,18 +52,18 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             {
                 // Server error (Database error eg. unreachable)
                 case "database":
-                    this.onServerError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.SERVER_DATABASE);
                     break;
                 // User not found
                 case "user":
-                    this.onUserNotFound?.Invoke();
+                    this.OnUserNotFound?.Invoke();
                     break;
                 // User is already logged in (Log out first)
                 case "unauthorized":
-                    this.onUnauthorizedError?.Invoke();
+                    this.OnUnauthorizedError?.Invoke();
                     break;
                 default:
-                    this.onUnknownError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                     break;
             }
         }

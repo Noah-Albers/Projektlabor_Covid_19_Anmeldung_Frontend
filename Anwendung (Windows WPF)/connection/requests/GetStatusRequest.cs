@@ -8,16 +8,14 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 {
     class GetStatusRequest : PLCARequest
     {
-        public Action onServerError;
-
         // If the server returns that the send id is invalid
-        public Action onUserNotFound;
+        public Action OnUserNotFound;
 
         // If the user is not logged in
-        public Action onUserNotLoggedIn;
+        public Action OnUserNotLoggedIn;
 
         // If the user is logged in
-        public Action<TimespentEntity> onUserLoggedIn;
+        public Action<TimespentEntity> OnUserLoggedIn;
 
         protected override int GetEndpointId()
         {
@@ -54,7 +52,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             // Checks if the user isn't logged in
             if (!loggedIn)
                 // Executes the not logged in callback
-                this.onUserNotLoggedIn?.Invoke();
+                this.OnUserNotLoggedIn?.Invoke();
             else
             {
                 // Creates the timespent entity
@@ -64,7 +62,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 };
 
                 // Executes the logged in callback with an unfinished timespent entity
-                this.onUserLoggedIn?.Invoke(ts);
+                this.OnUserLoggedIn?.Invoke(ts);
             }
         }
 
@@ -77,18 +75,20 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             log.Debug("Failed to perform request: "+err);
             log.Critical(resp.ToString(Formatting.None));
 
-            // Checks if the error is the userid
-            if (err.Equals("user"))
-                // Executes the unknow user id
-                this.onUserNotFound?.Invoke();
-            // Checks for a server error
-            else if (err.Equals("database"))
-                // Executes the server error
-                this.onServerError?.Invoke();
-            else
-                // Other erros make little sens as all required parameters have been provided
-                this.onUnknownError?.Invoke();
-        }
+            switch (err)
+            {
+                case "user":
+                    // Executes the unknow user id
+                    this.OnUserNotFound?.Invoke();
+                    break;
+                case "database":
+                    this.OnNonsenseError?.Invoke(NonsensicalError.SERVER_DATABASE);
+                    break;
+                default:
+                    this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
+                    break;
 
+            }
+        }
     }
 }

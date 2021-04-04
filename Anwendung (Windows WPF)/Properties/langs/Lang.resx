@@ -403,8 +403,14 @@ Bitte geben Sie ihren Namen an. Oder ändern Sie ihn etwas ab um Verwirrung zu v
   <data name="main.request.error.technical.authserver.text" xml:space="preserve">
     <value>Der Server hat einen Auth-fehler zurückgegeben.</value>
   </data>
+  <data name="main.request.error.technical.database.text" xml:space="preserve">
+    <value>Auf dem Server ist ein Fehler mit der Datenbank aufgetreten.</value>
+  </data>
   <data name="main.request.error.technical.handler.text" xml:space="preserve">
     <value>Der Server hat einen Handler-fehler zurückgegeben.</value>
+  </data>
+  <data name="main.request.error.technical.lessreturn.text" xml:space="preserve">
+    <value>Der Server zu wenig oder falsche Daten gesendet um die Anfrage zu verarbeiten.</value>
   </data>
   <data name="main.request.error.technical.text" xml:space="preserve">
     <value>Es ist ein technischer Fehler aufgetreten, bitte geben Sie einem Projektlaborianer bescheid.
@@ -413,6 +419,9 @@ Beschreibung:
   </data>
   <data name="main.request.error.technical.title" xml:space="preserve">
     <value>Technischer Fehler</value>
+  </data>
+  <data name="main.request.error.technical.unknown.text" xml:space="preserve">
+    <value>Es ist ein unbekannter Fehler aufgetreten. Bitte logs anschauen und ggf. kritisches Loggen benutzen.</value>
   </data>
   <data name="main.request.error.unknown.info" xml:space="preserve">
     <value>Es ist eine unbekannter Fehler aufgetreten. Bitte geben Sie einem Projektlaborianer bescheid.</value>

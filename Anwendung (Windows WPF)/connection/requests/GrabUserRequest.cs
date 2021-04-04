@@ -23,7 +23,13 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             log.Debug("Starting request to fetch all users (Simple version)");
 
             // Starts the request
-            this.DoRequest(host, port, privateKey, new JObject(), OnReceive, (_, _2) => this.onUnknownError?.Invoke());
+            this.DoRequest(
+                host,
+                port,
+                privateKey,
+                new JObject(),
+                OnReceive, (_, _2) => this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN)
+            );
         }
 
         private void OnReceive(JObject resp)
@@ -49,7 +55,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 catch
                 {
                     // If any user failes to load, the request is invalid
-                    this.onUnknownError?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
                     return;
                 }
 
