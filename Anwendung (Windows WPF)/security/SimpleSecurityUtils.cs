@@ -33,8 +33,6 @@ namespace Pl_Covid_19_Anmeldung.security
                             CryptoStream.Write(data, 0, data.Length);
                             CryptoStream.FlushFinalBlock();
                             CipherTextBytes = MemStream.ToArray();
-                            MemStream.Close();
-                            CryptoStream.Close();
                         }
                     }
                 }
@@ -72,8 +70,6 @@ namespace Pl_Covid_19_Anmeldung.security
                         {
 
                             ByteCount = CryptoStream.Read(PlainTextBytes, 0, PlainTextBytes.Length);
-                            MemStream.Close();
-                            CryptoStream.Close();
                         }
                     }
                 }

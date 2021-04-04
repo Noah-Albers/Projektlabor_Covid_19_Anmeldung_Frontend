@@ -116,7 +116,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                     );
                 }
             }
-            catch (HandshakeException e)
+            catch (HandshakeException)
             {
                 this.OnNonsenseError?.Invoke(NonsensicalError.AUTH_KEY);
             }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pl_Covid_19_Anmeldung.datahandling.exceptions
 {
+    [Serializable]
     class EntitySerializeException : Exception
     {
         // The name of the entry that failed to save

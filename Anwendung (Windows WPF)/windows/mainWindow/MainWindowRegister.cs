@@ -90,7 +90,7 @@ namespace projektlabor.noah.planmeldung.windows
                     // Displays the info
                     this.DisplayInfo(
                         Lang.main_register_error_title,
-                        Lang.main_register_error_rfid,
+                        Lang.main_register_error_name,
                         this.CloseOverlay,
                         Lang.main_popup_close
                     );

@@ -37,6 +37,9 @@ namespace Pl_Covid_19_Anmeldung.windows.dialogs
             // Removes the cancle event
             this.OnCancel = null;
 
+            // Removes the close handler to prevent both from beeing called
+            this.OnCancel = null;
+
             // Kills the window
             this.Close();
 

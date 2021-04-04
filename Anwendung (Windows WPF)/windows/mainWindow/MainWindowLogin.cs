@@ -21,11 +21,6 @@ namespace projektlabor.noah.planmeldung.windows
         private SimpleUserEntity selectedLoginUser;
 
         /// <summary>
-        /// Holds the currently selected timespan
-        /// </summary>
-        private TimespentEntity selectedLoginTime;
-
-        /// <summary>
         /// Holds all form field elements that are used at the login form.
         /// This is used to autodelete all data from these forms.
         /// </summary>
@@ -347,7 +342,6 @@ namespace projektlabor.noah.planmeldung.windows
         {
             // Sets the selected user and spenttime
             this.selectedLoginUser = user;
-            this.selectedLoginTime = spenttime;
 
             // Updates all fields
             this.FieldFirstname.Text = user.Firstname;
@@ -383,7 +377,6 @@ namespace projektlabor.noah.planmeldung.windows
                 field.Text = string.Empty;
 
             // Unselects anything
-            this.selectedLoginTime = null;
             this.selectedLoginUser = null;
         }
 

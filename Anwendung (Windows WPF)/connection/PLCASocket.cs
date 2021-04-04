@@ -113,9 +113,9 @@ namespace Pl_Covid_19_Anmeldung.connection
                 Array.Copy(decryptedAes, 32, this.aesIv, 0, 16);
 
                 this.logger.Critical("Key=" + string.Join(",", this.aesKey) + " Iv=" + string.Join(",", this.aesIv));
-            } catch(IOException e)
+            } catch(IOException)
             {
-                throw e;
+                throw;
             }
             catch
             {
@@ -220,6 +220,10 @@ namespace Pl_Covid_19_Anmeldung.connection
         /// </summary>
         public void Dispose()
         {
+            // Removes the crypto serivce (RSA)
+            if (this.rsaService != null)
+                this.rsaService.Dispose();
+
             // Closes the socket
             if (this.client != null)
                 this.client.Close();
