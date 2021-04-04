@@ -12,12 +12,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         public Action OnUserNotFound;
 
         // If the user's login was successfull
-        public Action onSuccessfullLogin;
+        public Action OnSuccessfullLogin;
 
-        protected override int GetEndpointId()
-        {
-            return 2;
-        }
+        protected override int GetEndpointId() => 2;
 
         /// <summary>
         /// Starts the request
@@ -35,7 +32,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             }, _ =>
             {
                 log.Debug("Login was successfull");
-                this.onSuccessfullLogin?.Invoke();
+                this.OnSuccessfullLogin?.Invoke();
             }, this.OnFailure);
         }
 

@@ -17,10 +17,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         // If the user is logged in
         public Action<TimespentEntity> OnUserLoggedIn;
 
-        protected override int GetEndpointId()
-        {
-            return 1;
-        }
+        protected override int GetEndpointId() => 1;
 
         /// <summary>
         /// Starts the request

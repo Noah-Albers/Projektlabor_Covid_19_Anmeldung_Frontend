@@ -16,7 +16,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         public Action OnUserAlredyExists;
 
         // If the registration was successfull (Holds the user's id)
-        public Action<int> onSuccess;
+        public Action<int> OnSuccess;
 
         // All entry's that the user has to pass
         private static readonly string[] REGISTER_ENTRYS = {
@@ -36,10 +36,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 		    UserEntity.RFID
         };
 
-        protected override int GetEndpointId()
-        {
-            return 4;
-        }
+        protected override int GetEndpointId() => 4;
 
         /// <summary>
         /// Starts the request
@@ -82,7 +79,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 log.Critical("New userid: " + id);
 
                 // Executes the success handler with the received id
-                this.onSuccess?.Invoke(id);
+                this.OnSuccess?.Invoke(id);
             }, this.OnFailure);
         }
 

@@ -10,10 +10,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         // Executer when the request has success
         public Action<SimpleUserEntity[]> onReceive;
 
-        protected override int GetEndpointId()
-        {
-            return 0;
-        }
+        protected override int GetEndpointId() => 0;
 
         /// <summary>
         /// Starts the request

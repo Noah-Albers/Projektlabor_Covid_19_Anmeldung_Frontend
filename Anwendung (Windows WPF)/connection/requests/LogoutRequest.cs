@@ -14,10 +14,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         // If the user's login was successfull
         public Action OnSuccessfullLogout;
 
-        protected override int GetEndpointId()
-        {
-            return 3;
-        }
+        protected override int GetEndpointId() => 3;
 
         /// <summary>
         /// Starts the request
