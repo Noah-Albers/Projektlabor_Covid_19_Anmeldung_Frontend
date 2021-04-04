@@ -42,7 +42,7 @@ namespace Pl_Covid_19_Anmeldung
 				return;
 
 			// Generates the final message
-			string finalMessage = prefix + msg.ToString();
+			string finalMessage = prefix + (msg?.ToString());
 
 			// Outputs the info
 			Console.WriteLine(finalMessage);
