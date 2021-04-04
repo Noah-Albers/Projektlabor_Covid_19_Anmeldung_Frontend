@@ -747,6 +747,45 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sie sind anscheinend nicht mehr angemeldet.
+        ///Bitte wählen Sie ihren Benutzer noch einmal aus um sicher zu gehen..
+        /// </summary>
+        public static string main_login_logout_error_loggedout_text {
+            get {
+                return ResourceManager.GetString("main.login.logout.error.loggedout.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Benutzer ist bereits abgemeldet.
+        /// </summary>
+        public static string main_login_logout_error_loggedout_title {
+            get {
+                return ResourceManager.GetString("main.login.logout.error.loggedout.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Benutzer konnte nicht gefunden werden.
+        ///Bitte versuchen Sie erneut ihren Benutzer auszuwählen.
+        ///Sollte weiterhin dies Meldung kommen, geben Sie bitte einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_login_logout_error_not_found_text {
+            get {
+                return ResourceManager.GetString("main.login.logout.error.not_found.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Benutzer nicht gefunden.
+        /// </summary>
+        public static string main_login_logout_error_not_found_title {
+            get {
+                return ResourceManager.GetString("main.login.logout.error.not_found.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Willkommen    (Erfolgreich angemeldet).
         /// </summary>
         public static string main_login_rfid_success_title_login {

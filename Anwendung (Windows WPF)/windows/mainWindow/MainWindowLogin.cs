@@ -187,34 +187,63 @@ namespace projektlabor.noah.planmeldung.windows
         {
             // Displays the loading animation
             this.DisplayLoading(Lang.main_login_loading_logout);
-            // TODO: send logout request
-            /*try
-            {
-                //Log the user out
-                Database.Instance.LogoutUser(this.selectedLoginTime);
 
-                // Closes the overlay and clears the field
-                this.Dispatcher.Invoke(() =>
-                {
-                    this.LoginResetForm();
-                    this.CloseOverlay();
-                });
-            }
-            catch (MySqlException)
+            // Creates the login request
+            var request = new LogoutRequest()
             {
-                // Displays the error
-                this.DisplayInfo(
-                    Lang.main_database_error_connect_title,
-                    Lang.main_database_error_connect_user_text,
-                    this.CloseOverlay,
-                    Lang.main_popup_close
-                );
-            }
-            catch
+                OnErrorIO = this.OnRequestErrorIO,
+                OnNonsenseError = this.OnRequestErrorNonsense,
+                OnSuccessfullLogout = OnSuccess,
+                OnUnauthorizedError = OnUnauth,
+                OnUserNotFound = OnUserNotFound
+            };
+
+            // Reference to the config
+            var cfg = PLCA.LOADED_CONFIG;
+
+            // Starts the request
+            request.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey, this.selectedLoginUser.Id.Value);
+
+            // Executes if the login was successful
+            void OnSuccess() => this.Dispatcher.Invoke(() =>
             {
-                // Displays the error
-                this.DisplayFatalError();
-            }*/
+                // Closes the animation
+                this.CloseOverlay();
+                // Clears the form
+                this.LoginResetForm();
+            });
+
+            // Executes if the user couldn't be found?!
+            void OnUserNotFound() => this.Dispatcher.Invoke(() =>
+            {
+                // Closes the animation
+                this.CloseOverlay();
+                // Clears the form
+                this.LoginResetForm();
+                // Displays the info
+                new AcknowledgmentWindow(
+                    Lang.main_login_logout_error_not_found_title,
+                    Lang.main_login_logout_error_not_found_text,
+                    null,
+                    Lang.main_login_error_button_ok
+                 ).ShowDialog();
+            });
+
+            // Executes if the user is still loged in?!
+            void OnUnauth() => this.Dispatcher.Invoke(() =>
+            {
+                // Closes the animation
+                this.CloseOverlay();
+                // Clears the form
+                this.LoginResetForm();
+                // Displays the info
+                new AcknowledgmentWindow(
+                    Lang.main_login_logout_error_loggedout_title,
+                    Lang.main_login_logout_error_loggedout_text,
+                    null,
+                    Lang.main_login_error_button_ok
+                 ).ShowDialog();
+            });
         });
 
         /// <summary>

@@ -353,6 +353,21 @@ Sollte weiterhin dies Meldung kommen, geben Sie bitte einem Projektlaborianer be
   <data name="main.login.login.error.not_found.title" xml:space="preserve">
     <value>Benutzer nicht gefunden</value>
   </data>
+  <data name="main.login.logout.error.loggedout.text" xml:space="preserve">
+    <value>Sie sind anscheinend nicht mehr angemeldet.
+Bitte wählen Sie ihren Benutzer noch einmal aus um sicher zu gehen.</value>
+  </data>
+  <data name="main.login.logout.error.loggedout.title" xml:space="preserve">
+    <value>Benutzer ist bereits abgemeldet</value>
+  </data>
+  <data name="main.login.logout.error.not_found.text" xml:space="preserve">
+    <value>Der Benutzer konnte nicht gefunden werden.
+Bitte versuchen Sie erneut ihren Benutzer auszuwählen.
+Sollte weiterhin dies Meldung kommen, geben Sie bitte einem Projektlaborianer bescheid.</value>
+  </data>
+  <data name="main.login.logout.error.not_found.title" xml:space="preserve">
+    <value>Benutzer nicht gefunden</value>
+  </data>
   <data name="main.login.rfid.success.title.login" xml:space="preserve">
     <value>Willkommen    (Erfolgreich angemeldet)</value>
   </data>
