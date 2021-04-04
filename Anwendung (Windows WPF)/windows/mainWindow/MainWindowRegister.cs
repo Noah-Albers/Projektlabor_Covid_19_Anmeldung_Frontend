@@ -3,6 +3,8 @@ using System.Windows;
 using projektlabor.noah.planmeldung.datahandling;
 using projektlabor.noah.planmeldung.Properties.langs;
 using MySql.Data.MySqlClient;
+using Pl_Covid_19_Anmeldung.connection.requests;
+using Pl_Covid_19_Anmeldung;
 
 namespace projektlabor.noah.planmeldung.windows
 {
@@ -32,8 +34,69 @@ namespace projektlabor.noah.planmeldung.windows
 
             // Gets the inserted user
             var user = this.FormRegister.UserInput;
-            
+
             // TODO: Restart register user request
+            Task.Run(() =>
+            {
+                // Creates the login request
+                var request = new RegisterUserRequest()
+                {
+                    OnErrorIO = this.OnRequestErrorIO,
+                    OnNonsenseError = this.OnRequestErrorNonsense,
+                    OnRFIDAlreadyUsed = OnUsedRFID,
+                    OnUserAlreadyExists = OnUsedName,
+                    OnSuccess = OnSuccess
+                };
+
+                // Reference to the config
+                var cfg = PLCA.LOADED_CONFIG;
+
+                // Starts the request
+                request.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey, user);
+
+                // Executes if the user got registered successfully
+                void OnSuccess(int uid) => this.Dispatcher.Invoke(() =>
+                {
+                    // Resets the form
+                    this.FormRegister.ResetForm();
+                    this.CheckboxRegAcceptRules.IsChecked = false;
+                    this.ButtonRegisterRegister.IsEnabled = false;
+
+                    // Displays the info
+                    this.DisplayInfo(
+                        Lang.main_register_success_title,
+                        Lang.main_register_success_text,
+                        this.CloseOverlay,
+                        Lang.main_popup_close,
+                        false
+                    );
+                });
+
+                // Executes if the rfid is in use already
+                void OnUsedRFID()
+                {
+                    // Displays the info
+                    this.DisplayInfo(
+                        Lang.main_register_error_title,
+                        Lang.main_register_error_rfid,
+                        this.CloseOverlay,
+                        Lang.main_popup_close
+                    );
+                };
+
+                // Executes if the name is in use already
+                void OnUsedName() => this.Dispatcher.Invoke(() =>
+                {
+                    // Displays the info
+                    this.DisplayInfo(
+                        Lang.main_register_error_title,
+                        Lang.main_register_error_rfid,
+                        this.CloseOverlay,
+                        Lang.main_popup_close
+                    );
+                });
+
+            });
         }
 
         /// <summary>

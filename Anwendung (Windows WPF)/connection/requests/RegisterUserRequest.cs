@@ -8,12 +8,10 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 {
     class RegisterUserRequest : PLCARequest
     {
-        // Server returned, that we have seen an invlid user
-        public Action OnInvalidUserServer;
-        // If a required value is missing
-        public Action<string> OnMissingValue;
         // If a user with the name and lastname already exists
-        public Action OnUserAlredyExists;
+        public Action OnUserAlreadyExists;
+        // If a user with the rfid already exists
+        public Action OnRFIDAlreadyUsed;
 
         // If the registration was successfull (Holds the user's id)
         public Action<int> OnSuccess;
@@ -99,10 +97,13 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                     this.OnNonsenseError?.Invoke(NonsensicalError.SERVER_DATABASE);
                     break;
                 case "user":
-                    this.OnInvalidUserServer?.Invoke();
+                    this.OnNonsenseError?.Invoke(NonsensicalError.LESS_DATA);
                     break;
-                case "duplicated":
-                    this.OnUserAlredyExists?.Invoke();
+                case "dup.name":
+                    this.OnUserAlreadyExists?.Invoke();
+                    break;
+                case "dup.rfid":
+                    this.OnRFIDAlreadyUsed?.Invoke();
                     break;
                 default:
                     this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
