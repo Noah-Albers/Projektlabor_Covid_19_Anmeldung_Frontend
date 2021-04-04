@@ -708,6 +708,45 @@ namespace projektlabor.noah.planmeldung.Properties.langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sie sind anscheinend immer noch angemeldet.
+        ///Bitte wählen Sie ihren Benutzer noch einmal aus um sicher zu gehen..
+        /// </summary>
+        public static string main_login_login_error_loggedin_text {
+            get {
+                return ResourceManager.GetString("main.login.login.error.loggedin.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Benutzer ist immer noch angemeldet.
+        /// </summary>
+        public static string main_login_login_error_loggedin_title {
+            get {
+                return ResourceManager.GetString("main.login.login.error.loggedin.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Benutzer konnte nicht gefunden werden.
+        ///Bitte versuchen Sie erneut ihren Benutzer auszuwählen.
+        ///Sollte weiterhin dies Meldung kommen, geben Sie bitte einem Projektlaborianer bescheid..
+        /// </summary>
+        public static string main_login_login_error_not_found_text {
+            get {
+                return ResourceManager.GetString("main.login.login.error.not_found.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Benutzer nicht gefunden.
+        /// </summary>
+        public static string main_login_login_error_not_found_title {
+            get {
+                return ResourceManager.GetString("main.login.login.error.not_found.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Willkommen    (Erfolgreich angemeldet).
         /// </summary>
         public static string main_login_rfid_success_title_login {

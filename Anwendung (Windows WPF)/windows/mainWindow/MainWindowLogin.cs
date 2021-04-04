@@ -2,7 +2,6 @@
 using Pl_Covid_19_Anmeldung;
 using Pl_Covid_19_Anmeldung.connection.requests;
 using Pl_Covid_19_Anmeldung.windows.requests;
-using projektlabor.noah.planmeldung.datahandling;
 using projektlabor.noah.planmeldung.datahandling.entities;
 using projektlabor.noah.planmeldung.Properties.langs;
 using System;
@@ -122,35 +121,63 @@ namespace projektlabor.noah.planmeldung.windows
         {
             // Displays the loading animation
             this.DisplayLoading(Lang.main_login_loading);
-            // TODO: send login request
-            /*try
-            {
-                //Log the user in
-                Database.Instance.LoginUser(this.selectedLoginUser, this.selectedLoginTime);
 
-                this.Dispatcher.Invoke(() =>
-                {
-                    // Closes the animation
-                    this.CloseOverlay();
-                    // Clears the form
-                    this.LoginResetForm();
-                });
-            }
-            catch (MySqlException)
+            // Creates the login request
+            var request = new LoginRequest()
             {
-                // Displays the error
-                this.DisplayInfo(
-                    Lang.main_database_error_connect_title,
-                    Lang.main_database_error_connect_user_text,
-                    this.CloseOverlay,
-                    Lang.main_popup_close
-                );
-            }
-            catch
+                OnErrorIO = this.OnRequestErrorIO,
+                OnNonsenseError = this.OnRequestErrorNonsense,
+                OnUnauthorizedError = OnUnauth,
+                OnUserNotFound = OnUserNotFound,
+                OnSuccessfullLogin = OnSuccess
+            };
+
+            // Reference to the config
+            var cfg = PLCA.LOADED_CONFIG;
+
+            // Starts the request
+            request.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey, this.selectedLoginUser.Id.Value);
+
+            // Executes if the login was successful
+            void OnSuccess() => this.Dispatcher.Invoke(() =>
             {
-                // Displays the error
-                this.DisplayFatalError();
-            }*/
+                // Closes the animation
+                this.CloseOverlay();
+                // Clears the form
+                this.LoginResetForm();
+            });
+
+            // Executes if the user couldn't be found?!
+            void OnUserNotFound() => this.Dispatcher.Invoke(() =>
+            {
+                // Closes the animation
+                this.CloseOverlay();
+                // Clears the form
+                this.LoginResetForm();
+                // Displays the info
+                new AcknowledgmentWindow(
+                    Lang.main_login_login_error_not_found_title,
+                    Lang.main_login_login_error_not_found_text,
+                    null,
+                    Lang.main_login_error_button_ok
+                 ).ShowDialog();
+            });
+
+            // Executes if the user is still loged in?!
+            void OnUnauth() => this.Dispatcher.Invoke(() =>
+            {
+                // Closes the animation
+                this.CloseOverlay();
+                // Clears the form
+                this.LoginResetForm();
+                // Displays the info
+                new AcknowledgmentWindow(
+                    Lang.main_login_login_error_loggedin_title,
+                    Lang.main_login_login_error_loggedin_text,
+                    null,
+                    Lang.main_login_error_button_ok
+                 ).ShowDialog();
+            });
         });
 
         /// <summary>
