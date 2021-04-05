@@ -241,15 +241,6 @@ namespace projektlabor.noah.planmeldung.windows
         });
         
         /// <summary>
-        /// Displays the fatal error message to the user
-        /// </summary>
-        private void DisplayFatalError() => this.DisplayInfo
-        (
-            Lang.main_error_fatal_title,
-            Lang.main_error_fatal_text
-        );
-
-        /// <summary>
         /// Shows the given text with the title.
         /// </summary>
         /// <param name="title">The overlay title</param>
