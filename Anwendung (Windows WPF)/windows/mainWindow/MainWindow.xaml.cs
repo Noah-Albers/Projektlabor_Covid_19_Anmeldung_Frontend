@@ -125,8 +125,8 @@ namespace projektlabor.noah.planmeldung.windows
             if (this.FormRegister.OnRFIDReceive(rfid))
                 return;
 
-            // Shows the loading window
-            this.DisplayLoading(Lang.main_rfid_loading);
+            // Start the login process using the rfid
+            this.LoginUserFromRFID(rfid);
         });
 
         /// <summary>

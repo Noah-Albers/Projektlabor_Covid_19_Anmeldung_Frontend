@@ -110,7 +110,7 @@ namespace projektlabor.noah.planmeldung.utils
                     log.Critical(id);
 
                     // Executes the id event
-                    onReceivId(data);
+                    onReceivId(id);
                 }
             }
             catch

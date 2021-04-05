@@ -234,81 +234,48 @@ namespace projektlabor.noah.planmeldung.windows
         /// Tries to login the user using his rfid
         /// </summary>
         /// <param name="rfid">The rfid</param>
-        private void LoginUserFromRFID(string rfid)
+        private void LoginUserFromRFID(string rfid) => Task.Run(() =>
         {
-            // Tries to get a user by it's rfid
-            Task.Run(() =>
+            // Shows the loading window
+            this.DisplayLoading(Lang.main_rfid_loading);
+
+            // Creates the login request
+            var request = new LoginRFIDRequest()
             {
-                /*try
-                {
-                    // Tries to find a user
-                    Tuple<SimpleUserEntity, TimespentEntity> fetchedUser = Database.Instance.GetUserByRFIDCode(rfid);
+                OnErrorIO = this.OnRequestErrorIO,
+                OnNonsenseError = this.OnRequestErrorNonsense,
+                OnSuccess = OnSuccess,
+                OnUserNotFound = OnRFIDNotFound
+            };
 
-                    // Gets the values
-                    var user = fetchedUser.Item1;
-                    var time = fetchedUser.Item2;
+            // Reference to the config
+            var cfg = PLCA.LOADED_CONFIG;
 
-                    // Checks if a user got found
-                    if (user == null)
-                    {
-                        // Sends the error
-                        this.Dispatcher.Invoke(() => this.DisplayInfo(
-                            Lang.main_rfid_error_loading_title,
-                            Lang.main_rfid_error_loading_text,
-                            () => this.CloseOverlay(),
-                            Lang.main_popup_close
-                        ));
-                        return;
-                    }
+            // Starts the request
+            request.DoRequest(cfg.Host, cfg.Port, cfg.PrivateKey, rfid);
 
-                    // If the user was already logged in
-                    bool isLogin = time == null;
+            // Executes if the user got logged in/out successfully
+            void OnSuccess(bool status/*true=>login, false=>logout*/)
+            {
+                // Closes the overlay and clears the fields
+                this.Dispatcher.Invoke(() => this.LoginResetForm());
 
-                    // Checks if the user must be logged in or logged out
-                    if (isLogin)
-                    {
-                        // Creates a new time
-                        time = new TimespentEntity
-                        {
-                            Start = DateTime.Now
-                        };
+                // Displays the short animation
+                this.LoginStartDisplayCountdown(status);
+            }
 
-                        // Logs in the user
-                        Database.Instance.LoginUser(user,time);
-                    }
-                    else
-                    {
-                        // Sets the stop time
-                        time.Stop = DateTime.Now;
-
-                        // Logs out the user
-                        Database.Instance.LogoutUser(time);
-                    }
-
-                    // Closes the overlay and clears the fields
-                    this.Dispatcher.Invoke(() => this.LoginResetForm());
-
-                    // Displays the short animation
-                    this.LoginStartDisplayCountdown(isLogin);
-                }
-                catch (MySqlException)
-                {
-                    // Displays the error
-                    this.DisplayInfo(
-                        Lang.main_database_error_connect_title,
-                        Lang.main_database_error_connect_user_text,
-                        this.CloseOverlay,
-                        Lang.main_popup_close
-                    );
-                }
-                catch
-                {
-                    // Displays the error
-                    this.DisplayFatalError();
-                }*/
-                // TODO: send login request
-            });
-        }
+            // Executes if no user with the provided rfid could be found
+            void OnRFIDNotFound()
+            {
+                // Displays the error
+                this.DisplayInfo(
+                    Lang.main_rfid_error_loading_title,
+                    Lang.main_rfid_error_loading_text,
+                    this.CloseOverlay,
+                    Lang.main_popup_close
+                );
+            }
+        });
 
         /// <summary>
         /// Displays an animation to indicate that the user has successfull been logged out or logged in
