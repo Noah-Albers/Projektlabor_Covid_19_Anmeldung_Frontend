@@ -74,7 +74,7 @@ namespace projektlabor.noah.planmeldung.windows
             // Gets the language key of the error
             //   Gets the attribute for the langauge as an enum property (Lang)
             //   Gets the value of the value from that enum property
-            string langKey = err.GetAttribute<EnumProperty>(x => x.Key.Equals("Lang")).GetValue<string>();
+            string langKey = err.GetAttribute<EnumProperty>(x => x.Key.Equals("lang")).GetValue<string>();
 
             // Gets the info
             string info = Lang.ResourceManager.GetString($"main.request.error.technical.{langKey}.text", Lang.Culture);
