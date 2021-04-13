@@ -5,17 +5,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 
 namespace Pl_Covid_19_Anmeldung.connection
 {
     class PLCASocket : IDisposable
     {
+        // Random generator
+        private static readonly Random RDM_GENERATOR = new Random();
+
         // Client id to indicate that the requesting user is the covid-login
         private const int CLIENT_ID = 0;
 
         // Reference to the program-logger
-        private Logger logger = PLCA.LOGGER;
+        private readonly Logger logger = PLCA.LOGGER;
 
         // The stream to access any read/write functions
         private readonly NetworkStream stream;
@@ -34,16 +38,20 @@ namespace Pl_Covid_19_Anmeldung.connection
         // Timeout-time (How many ms to wait until the connection gets killed)
         public long Timeout = 5000;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        /// <param name="port"></param>
-        /// <param name="privateKey"></param>
+        // The nonce bytes that are required to be set in order to accept the request
+        private readonly byte[] nonceBytes = new byte[8];
+
+        /// <param name="host">The host/ip that shall be requested</param>
+        /// <param name="port">The port on which the remote server is running on the host</param>
+        /// <param name="privateKey">the rsa-key that is used to encrypt the connection</param>
         /// <exception cref="SocketException">If anything went wrong with the connection</exception>
         /// <exception cref="IOException">If anything went wrong during the handshake</exception>
         public PLCASocket(string host,int port,RSAParameters privateKey) 
         {
+
+            // Generates a random nonce
+            RDM_GENERATOR.NextBytes(this.nonceBytes);
+
             try
             {
                 this.logger.Debug("Starting connection to "+host+":"+port);
@@ -85,6 +93,12 @@ namespace Pl_Covid_19_Anmeldung.connection
                 this.stream.WriteByte(CLIENT_ID);
 
                 this.logger.Debug("Send client-id");
+
+                // Sends the random nonce
+                this.stream.Write(nonceBytes, 0, nonceBytes.Length);
+
+                this.logger.Debug("Send nonce");
+                this.logger.Critical(string.Join(",", nonceBytes));
 
                 // Receives the aes-data
                 for (int i = 0; i < 256; i++)
@@ -206,7 +220,25 @@ namespace Pl_Covid_19_Anmeldung.connection
                 if (dec == null)
                     throw new Exception("Data-decryption failed.");
 
-                return dec;
+                this.logger.Debug("Checking nonce");
+
+                // Checks if the dec has at least enough bytes for the nonce bytes
+                if (dec.Length < this.nonceBytes.Length)
+                    throw new IOException("No nonce provided.");
+
+                // Check if the bytes of the nonce match
+                for (int i = 0; i < this.nonceBytes.Length; i++)
+                    if (this.nonceBytes[i] != dec[i])
+                        throw new IOException("Nonce does not match.");
+
+                this.logger.Debug("Nonce is correct.");
+
+                // Creates a copy of the packet without the nonce
+                byte[] finPkt = new byte[dec.Length - this.nonceBytes.Length];
+                // Copies the bytes of the actual packet
+                Array.Copy(dec, this.nonceBytes.Length, finPkt, 0, finPkt.Length);
+
+                return finPkt;
             }
             catch (Exception e)
             {
