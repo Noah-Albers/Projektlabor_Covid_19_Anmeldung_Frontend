@@ -25,21 +25,25 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="userId">The id of a user</param>
         public void DoRequest(string host, int port, RSAParameters rsa, int userId)
         {
-            log.Debug("Starting get status request");
-            log.Critical("UserId=" + userId);
+            // Gets the logger
+            Logger log = this.GenerateLogger("GetStatusRequest");
+
+            log
+                .Debug("Starting get status request")
+                .Critical("UserId=" + userId);
 
             // Starting the request
-            this.DoRequest(host, port, rsa, new JObject()
+            this.DoRequest(log,host, port, rsa, new JObject()
             {
                 ["id"] = userId
-            }, this.OnSuccess,this.OnFailure);
+            }, x=>this.OnSuccess(log,x),(a,b)=>this.OnFailure(log,a,b));
         }
         
         /// <summary>
         /// Handler for a successfull request
         /// </summary>
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
-        private void OnSuccess(JObject resp)
+        private void OnSuccess(Logger log,JObject resp)
         {
             // If the user is logged in
             bool loggedIn = (bool)resp["loggedin"];
@@ -67,10 +71,11 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// Error handler
         /// </summary>
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
-        private void OnFailure(string err,JObject resp)
+        private void OnFailure(Logger log,string err,JObject resp)
         {
-            log.Debug("Failed to perform request: "+err);
-            log.Critical(resp.ToString(Formatting.None));
+            log
+                .Debug("Failed to perform request: "+err)
+                .Critical(resp.ToString(Formatting.None));
 
             switch (err)
             {

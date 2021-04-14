@@ -22,28 +22,33 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="userId">The id of the user that shall be loged out</param>
         public void DoRequest(string host, int port, RSAParameters rsa, int userId)
         {
-            log.Debug("Starting request to logout user");
-            log.Critical("Userid="+userId);
+            // Generates the logger
+            Logger log = this.GenerateLogger("LogoutRequest");
+
+            log
+                .Debug("Starting request to logout user")
+                .Critical("Userid="+userId);
 
             // Starts the request
-            this.DoRequest(host, port, rsa, new JObject()
+            this.DoRequest(log,host, port, rsa, new JObject()
             {
                 ["id"] = userId
             }, _ =>
             {
                 log.Debug("Logout successful");
                 this.OnSuccessfullLogout?.Invoke();
-            }, this.OnFailure);
+            }, (a,b)=>this.OnFailure(log,a,b));
         }
 
         /// <summary>
         /// Error handler
         /// </summary>
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
-        private void OnFailure(string err, JObject resp)
+        private void OnFailure(Logger log,string err, JObject resp)
         {
-            log.Debug("Logout failed: "+err);
-            log.Critical(resp.ToString());
+            log
+                .Debug("Logout failed: "+err)
+                .Critical(resp.ToString());
 
             switch (err)
             {

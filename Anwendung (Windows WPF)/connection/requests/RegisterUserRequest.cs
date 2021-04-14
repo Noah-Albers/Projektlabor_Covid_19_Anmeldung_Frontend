@@ -42,8 +42,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="userId">The id of the user that shall be loged out</param>
         public void DoRequest(string host, int port, RSAParameters rsa, UserEntity user)
         {
-            log.Debug("Starting request to register a new user.");
-            log.Critical(user.ToString());
+            // Generates the logger
+            Logger log = this.GenerateLogger("RegisterUserRequest");
+
+            log
+                .Debug("Starting request to register a new user.")
+                .Critical("User="+user.ToString());
 
             // The object that will hold the request
             JObject request = new JObject();
@@ -68,27 +72,29 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
             }
 
             // Starts the request
-            this.DoRequest(host, port, rsa, request, resp=>
+            this.DoRequest(log,host, port, rsa, request, resp=>
             {
                 // Gets the id
                 int id = (int)resp["id"];
 
-                log.Debug("Successfully registered a new user");
-                log.Critical("New userid: " + id);
+                log
+                    .Debug("Successfully registered a new user")
+                    .Critical("New userid: " + id);
 
                 // Executes the success handler with the received id
                 this.OnSuccess?.Invoke(id);
-            }, this.OnFailure);
+            }, (a,b)=>this.OnFailure(log,a,b));
         }
 
         /// <summary>
         /// Error handler
         /// </summary>
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
-        private void OnFailure(string err,JObject resp)
+        private void OnFailure(Logger log,string err,JObject resp)
         {
-            log.Debug("Failed to register user: "+err);
-            log.Critical(resp);
+            log
+                .Debug("Failed to register user: "+err)
+                .Critical(resp);
 
             // Checks the error
             switch (err)

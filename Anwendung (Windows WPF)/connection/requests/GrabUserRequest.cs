@@ -2,6 +2,7 @@
 using projektlabor.noah.planmeldung.datahandling.entities;
 using System;
 using System.Security.Cryptography;
+using System.Xml;
 
 namespace Pl_Covid_19_Anmeldung.connection.requests
 {
@@ -17,26 +18,31 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// </summary>
         public void DoRequest(string host, int port, RSAParameters privateKey)
         {
+            // Gets the logger
+            Logger log = this.GenerateLogger("GrabUserRequest");
+
             log.Debug("Starting request to fetch all users (Simple version)");
 
             // Starts the request
             this.DoRequest(
+                log,
                 host,
                 port,
                 privateKey,
                 new JObject(),
-                OnReceive, (_, _2) => this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN)
+                x=>this.OnReceive(x,log), (_, _2) => this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN)
             );
         }
 
-        private void OnReceive(JObject resp)
+        private void OnReceive(JObject resp,Logger log)
         {
 
             // Gets the raw users as an jarray
             JArray rawUserArr = (JArray)resp["users"];
 
-            log.Debug("Received users");
-            log.Critical(rawUserArr.ToString());
+            log
+                .Debug("Received users")
+                .Critical($"Users={rawUserArr.ToString(Newtonsoft.Json.Formatting.None)}");
 
             // Creates the array
             SimpleUserEntity[] users = new SimpleUserEntity[rawUserArr.Count];

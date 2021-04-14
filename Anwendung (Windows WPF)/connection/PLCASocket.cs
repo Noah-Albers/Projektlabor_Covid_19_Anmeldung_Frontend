@@ -12,14 +12,11 @@ namespace Pl_Covid_19_Anmeldung.connection
 {
     class PLCASocket : IDisposable
     {
-        // Random generator
-        private static readonly Random RDM_GENERATOR = new Random();
-
         // Client id to indicate that the requesting user is the covid-login
         private const int CLIENT_ID = 0;
 
         // Reference to the program-logger
-        private readonly Logger logger = PLCA.LOGGER;
+        private readonly Logger log;
 
         // The stream to access any read/write functions
         private readonly NetworkStream stream;
@@ -46,15 +43,16 @@ namespace Pl_Covid_19_Anmeldung.connection
         /// <param name="privateKey">the rsa-key that is used to encrypt the connection</param>
         /// <exception cref="SocketException">If anything went wrong with the connection</exception>
         /// <exception cref="IOException">If anything went wrong during the handshake</exception>
-        public PLCASocket(string host,int port,RSAParameters privateKey) 
+        public PLCASocket(Logger log,string host,int port,RSAParameters privateKey) 
         {
-
-            // Generates a random nonce
-            RDM_GENERATOR.NextBytes(this.nonceBytes);
+            // Creates the logger
+            this.log = log;
 
             try
             {
-                this.logger.Debug("Starting connection to "+host+":"+port);
+                this.log
+                    .Debug("Starting connection to server")
+                    .Critical($"Host={host}; Port={port}");
 
                 // Connects to the remote host
                 this.client = new TcpClient(host, port);
@@ -62,7 +60,7 @@ namespace Pl_Covid_19_Anmeldung.connection
             }
             catch (SocketException)
             {
-                this.logger.Debug("Connection failed, socket closed.");
+                this.log.Debug("Connection failed, socket closed.");
 
                 // Converts a socket exception to an io-exception for easier handling later
                 throw new IOException();
@@ -92,24 +90,26 @@ namespace Pl_Covid_19_Anmeldung.connection
                 // Sends the client-id
                 this.stream.WriteByte(CLIENT_ID);
 
-                this.logger.Debug("Send client-id");
+                this.log.Debug("Send client-id (0)");
 
                 // Sends the random nonce
                 this.stream.Write(nonceBytes, 0, nonceBytes.Length);
 
-                this.logger.Debug("Send nonce");
-                this.logger.Critical(string.Join(",", nonceBytes));
+                this.log
+                    .Debug("Send nonce")
+                    .Critical("Nonce="+string.Join(",", nonceBytes));
 
                 // Receives the aes-data
                 for (int i = 0; i < 256; i++)
                     aesBytes[i] = this.ReadByte();
 
-                this.logger.Debug("Received aes-secrets");
-                this.logger.Critical(string.Join(",", aesBytes));
+                this.log
+                    .Debug("Received aes-secrets")
+                    .Critical("Received aes-bytes="+string.Join(",", aesBytes));
             }
             catch
             {
-                this.logger.Debug("Connection closed (I/O)");
+                this.log.Debug("Connection closed (I/O)");
 
                 throw new IOException();
             }
@@ -119,21 +119,22 @@ namespace Pl_Covid_19_Anmeldung.connection
                 // Decryptes the bytes
                 byte[] decryptedAes = this.rsaService.Decrypt(aesBytes, false);
 
-                this.logger.Debug("Decrypted successfull");
-                this.logger.Critical(string.Join(",", decryptedAes));
+                this.log
+                    .Debug("Decrypted successfull")
+                    .Critical("Decrypted aes bytes="+string.Join(",", decryptedAes));
 
                 // Copies the aes key and aes iv
                 Array.Copy(decryptedAes, 0, this.aesKey, 0, 32);
                 Array.Copy(decryptedAes, 32, this.aesIv, 0, 16);
 
-                this.logger.Critical("Key=" + string.Join(",", this.aesKey) + " Iv=" + string.Join(",", this.aesIv));
+                this.log.Critical("Key=" + string.Join(",", this.aesKey) + "; Iv=" + string.Join(",", this.aesIv));
             } catch(IOException)
             {
                 throw;
             }
             catch
             {
-                this.logger.Debug("Failed to decrypt");
+                this.log.Debug("Failed to decrypt");
 
                 // Failed to decrypt the aes-key
                 throw new HandshakeException();
@@ -220,7 +221,9 @@ namespace Pl_Covid_19_Anmeldung.connection
                 if (dec == null)
                     throw new Exception("Data-decryption failed.");
 
-                this.logger.Debug("Checking nonce");
+                this.log
+                    .Debug("Checking nonce")
+                    .Critical($"Received bytes=[{string.Join(",",dec)}}}");
 
                 // Checks if the dec has at least enough bytes for the nonce bytes
                 if (dec.Length < this.nonceBytes.Length)
@@ -231,7 +234,8 @@ namespace Pl_Covid_19_Anmeldung.connection
                     if (this.nonceBytes[i] != dec[i])
                         throw new IOException("Nonce does not match.");
 
-                this.logger.Debug("Nonce is correct.");
+                this.log
+                    .Debug("Nonce is correct.");
 
                 // Creates a copy of the packet without the nonce
                 byte[] finPkt = new byte[dec.Length - this.nonceBytes.Length];

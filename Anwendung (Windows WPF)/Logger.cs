@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,40 +21,87 @@ namespace Pl_Covid_19_Anmeldung
 		CRITICAL = 0b100000,	// Critical informations that can contain keys and other secrets. ONLY USED WHEN LIVE-DEBUGGING.
 		ALL = ~0;               // All of the above will be logged
 
-		// The level that the logger has (Used the above levels and concat them using | )
-		private readonly int logLevel;
+		// The level that the logger has (Use the above levels o concat them using |)
+		private static int LOG_LEVEL_WRITE, LOG_LEVEL_OUTPUT;
 
-		public Logger(int logLevel)
+		// The output for the file-writer
+		private static StreamWriter OPEN_FILE;
+
+		// Source that will be used as a prefix for the logging
+		public readonly object Source;
+
+		public Logger(object source)
 		{
-			this.logLevel = logLevel;
+			this.Source = source;
 		}
 
 		/// <summary>
-		/// The actual method to log an occurrence.
-		/// Used by all others to log.
+		/// Starts the logger service (Opens the file etc)
 		/// </summary>
-		/// <param name="level">the level that gets logged (Used to verify, that the message should be outputted)</param>
-		/// <param name="prefix">prefix the prefix that can be printed before the message (Visual distinction)</param>
-		/// <param name="msg">msg the actual message that shall be logged</param>
-		private void Log(int level, string prefix, object msg)
+		/// <param name="logDirectory">The directory where the log-files shall be saved</param>
+		/// <param name="logLevelWrite">The log level for all logs that will be written to the log file</param>
+		/// <param name="logLevelOutput">The log level for all logs that will be displayed on the console</param>
+		/// <exception cref="Exception">See StreamWriter and Directory.CreateDirectory for reference</exception>
+		public static void init(string logDirectory, int logLevelWrite, int logLevelOutput)
 		{
-			// Checks if the log-level does not match
-			if ((this.logLevel & level) == 0)
-				return;
+			LOG_LEVEL_WRITE = logLevelWrite;
+			LOG_LEVEL_OUTPUT = logLevelOutput;
 
-			// Generates the final message
-			string finalMessage = prefix + (msg?.ToString());
+			// Ensures that the directory exists
+			Directory.CreateDirectory(logDirectory);
+		
+			// Gets the file-formatter
+			string dt = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
 
-			// Outputs the info
-			Console.WriteLine(finalMessage);
+			// Opens the file stream
+			OPEN_FILE = new StreamWriter(logDirectory + $"Log-{dt}.log",false, Encoding.UTF8);
 		}
 
-		public void Debug(object msg) =>this.Log(DEBUG, "\t[DEBUG] ", msg);
-		public void Debug_special(object msg) =>this.Log(DEBUG_SPECIAL, "[DEBUG++] ", msg);
-		public void Info(object msg) =>this.Log(INFO, "[INFO] ", msg);
-		public void Warn(object msg) =>this.Log(WARNING, "[WARNING] ", msg);
-		public void Error(object msg) =>this.Log(ERROR, "[ERROR] ", msg);
-		public void Critical(object msg) => this.Log(CRITICAL, "[CRITICAL] ", msg);
+		/// <summary>
+		/// Loges the given message in the log file and in the console
+		/// </summary>
+		/// <param name="logger">The logger itself to return. Used for convinience</param>
+		/// <param name="level">The priority level of the message. Determines if the message will be logged</param>
+		/// <param name="prefix">The prefix of the level of the message</param>
+		/// <param name="msg">The message that shall be logged</param>
+		private static Logger Log(Logger logger,int level, object prefix, object msg)
+		{
+			// Generates the final message
+			string finMsg = $"{prefix}{(logger.Source == null ? "" : ($" [{logger.Source}] "))}{(msg ?? "")}\n";
+
+			// Checks if the log-level for output matches
+			if ((LOG_LEVEL_OUTPUT & level) != 0)
+			{
+				// Outputs the info
+				Console.Write(finMsg);
+			}
+
+			// Checks if the log-level for file-writing matches
+			if ((LOG_LEVEL_WRITE & level) != 0)
+			{
+				try
+				{
+					// Outputs the message
+					OPEN_FILE.Write(finMsg);
+					OPEN_FILE.Flush();
+				}
+				catch (Exception e)
+				{
+					// Error, can likely not be handled
+					Console.WriteLine("ERROR");
+					Console.WriteLine(e);
+				}
+			}
+
+			return logger;
+		}
+
+		public Logger Debug(object msg) => Log(this,DEBUG, "\t[DEBUG] ", msg);
+		public Logger Debug_special(object msg) =>Log(this, DEBUG_SPECIAL, "[DEBUG++] ", msg);
+		public Logger Info(object msg) =>Log(this, INFO, "[INFO] ", msg);
+		public Logger Warn(object msg) =>Log(this, WARNING, "[WARNING] ", msg);
+		public Logger Error(object msg) =>Log(this, ERROR, "[ERROR] ", msg);
+		public Logger Critical(object msg) => Log(this, CRITICAL, "[CRITICAL] ", msg);
 
 	}
 }

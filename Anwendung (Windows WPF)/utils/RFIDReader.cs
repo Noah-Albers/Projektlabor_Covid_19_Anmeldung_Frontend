@@ -7,7 +7,7 @@ namespace projektlabor.noah.planmeldung.utils
     class RFIDReader
     {
         // Reference to the logger of the program
-        private readonly Logger log = PLCA.LOGGER;
+        private readonly Logger log = new Logger("RFID-Reader");
 
         /// <summary>
         /// Holds the serial connection
@@ -33,7 +33,9 @@ namespace projektlabor.noah.planmeldung.utils
             // Gets all ports
             string[] ports = SerialPort.GetPortNames();
 
-            log.Info("Starting to request all ports: "+string.Join(",",ports));
+            this.log
+                .Info("Starting to request all ports")
+                .Critical($"Ports=[{string.Join(",",ports)}]");
 
             // Checks all ports if the esp32-rfid-scanner is connected
             foreach (string p in ports)
@@ -78,7 +80,7 @@ namespace projektlabor.noah.planmeldung.utils
                 catch { }
             }
 
-            log.Info("No RFID-Scanner could be found");
+            this.log.Info("No RFID-Scanner could be found");
 
             // Execute without finding a port
             onNoPortFound();
@@ -106,8 +108,9 @@ namespace projektlabor.noah.planmeldung.utils
                     // Gets the id
                     string id = data.Substring(0, data.Length - this.endIndicator.Length);
 
-                    log.Debug("Received rfid");
-                    log.Critical(id);
+                    this.log
+                        .Debug("Received rfid")
+                        .Critical(id);
 
                     // Executes the id event
                     onReceivId(id);

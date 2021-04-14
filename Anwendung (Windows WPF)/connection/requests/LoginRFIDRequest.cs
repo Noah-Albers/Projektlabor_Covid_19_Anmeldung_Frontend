@@ -20,11 +20,15 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="userId">The id of a user</param>
         public void DoRequest(string host, int port, RSAParameters rsa, string rfid)
         {
-            log.Debug("Starting request to login/logout user (Using RFID)");
-            log.Critical("RFID=" + rfid);
+            // Generates the logger
+            Logger log = this.GenerateLogger("LoginRFIDRequest");
+
+            log
+                .Debug("Starting request to login/logout user (Using RFID)")
+                .Critical("RFID=" + rfid);
 
             // Starts the request
-            this.DoRequest(host, port, rsa, new JObject()
+            this.DoRequest(log,host, port, rsa, new JObject()
             {
                 ["rfid"] = rfid
             }, res =>
@@ -32,21 +36,23 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                 // Gets the status
                 bool status = (bool)res["status"]; 
 
-                log.Debug("Request was successfull");
-                log.Critical("User is not logged " + (status ? "in" : "out"));
+                log
+                    .Debug("Request was successfull")
+                    .Critical("User is not logged " + (status ? "in" : "out"));
 
                 this.OnSuccess?.Invoke(status);
-            }, this.OnFailure);
+            }, (a,b)=>this.OnFailure(log,a,b));
         }
 
         /// <summary>
         /// Error handler
         /// </summary>
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
-        private void OnFailure(string err, JObject resp)
+        private void OnFailure(Logger log,string err, JObject resp)
         {
-            log.Debug("Failed to login user using rfid: "+err);
-            log.Critical(resp);
+            log
+                .Debug("Failed to login user using rfid: "+err)
+                .Critical(resp);
 
             switch (err)
             {

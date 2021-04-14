@@ -22,28 +22,33 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="userId">The id of a user</param>
         public void DoRequest(string host, int port, RSAParameters rsa, int userId)
         {
-            log.Debug("Starting request to login user");
-            log.Critical("Userid=" + userId);
+            // Generates the logger
+            Logger log = this.GenerateLogger("LoginRequest");
+
+            log
+                .Debug("Starting request to login user")
+                .Critical("Userid=" + userId);
 
             // Starts the request
-            this.DoRequest(host, port, rsa, new JObject()
+            this.DoRequest(log,host, port, rsa, new JObject()
             {
                 ["id"] = userId
             }, _ =>
             {
                 log.Debug("Login was successfull");
                 this.OnSuccessfullLogin?.Invoke();
-            }, this.OnFailure);
+            }, (a,b)=>this.OnFailure(log,a,b));
         }
 
         /// <summary>
         /// Error handler
         /// </summary>
         /// <exception cref="Exception">Any exception will be converted into an unknown error</exception>
-        private void OnFailure(string err, JObject resp)
+        private void OnFailure(Logger log,string err, JObject resp)
         {
-            log.Debug("Failed to login user: "+err);
-            log.Critical(resp);
+            log
+                .Debug("Failed to login user: "+err)
+                .Critical(resp);
 
             switch (err)
             {

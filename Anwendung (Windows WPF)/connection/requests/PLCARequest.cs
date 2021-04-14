@@ -12,13 +12,23 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
 {
     abstract class PLCARequest
     {
+        // Random generator
+        private readonly static Random RDM_GENERATOR = new Random();
+
         // Reference to the logger for the program
-        protected static Logger log = PLCA.LOGGER;
+        protected static Logger log;
 
         // Executer when an io error occurres
         public Action OnErrorIO;
         // Executer when the server returns a known handler but one that does not make sense. Eg. a permission error where to applicatation can by default only request resources where the permission is given
         public Action<NonsensicalError> OnNonsenseError;
+
+        /// <summary>
+        /// Generates a logger with a random id that can be 
+        /// </summary>
+        /// <param name="presetName"></param>
+        /// <returns></returns>
+        protected Logger GenerateLogger(string presetName) => new Logger(presetName + "." + RDM_GENERATOR.Next());
 
         /// <summary>
         /// The endpoint id at the server. Can be seen like a path in http
@@ -31,11 +41,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// Usually those occurre when a request has no valid endpoint or data for the handler.
         /// </summary>
         /// <param name="exc">The except-error-string to determin what kind of except-error occurred</param>
+        /// <param name="log">The logger to log the error to</param>
         /// <returns>The json-object that can be forwarded as a response from the server. Otherwise just throw an error</returns>
         /// <exception cref="Exception">Can throw an exception if no special handling for the error is required</exception>
-        protected void HandleFatalError(string exc)
+        protected void HandleFatalError(string exc,Logger log)
         {
-            log.Debug("Fatal error returned by remote server: "+exc);
+            log.Debug("Fatal error returned by remote server:"+exc);
 
             // Checks the returned error
             switch (exc)
@@ -62,12 +73,12 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
         /// <param name="requestData">The request object that defines any special data that might be required to fullfil the request.</param>
         /// <param name="onReceive">The callback to handle data if it got received successfully. The callback can throw an error. It will be catched and the unknown error callback will be executed</param>
         /// <param name="onError">The callback to handle any error that might have been returned by the remote handler. Exceptions that will be thrown will be handled as unknown error, same as the receive.</param>
-        protected void DoRequest(string host, int port, RSAParameters privateKey, JObject requestData,Action<JObject> onReceive,Action<string,JObject> onError = null)
+        protected void DoRequest(Logger log,string host, int port, RSAParameters privateKey, JObject requestData,Action<JObject> onReceive,Action<string,JObject> onError = null)
         {
             try
             {
                 // Starts the connection
-                using (PLCASocket socket = new PLCASocket(host, port, privateKey))
+                using (PLCASocket socket = new PLCASocket(log,host, port, privateKey))
                 {
                     // Creates the request
                     JObject request = new JObject()
@@ -76,10 +87,15 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                         ["data"] = requestData                  // Appends the request-data
                     };
 
-                    log.Debug("Sending request...");
+                    // Gets the bytes
+                    byte[] requestBytes = Encoding.UTF8.GetBytes(request.ToString());
+
+                    log
+                        .Debug("Sending request...")
+                        .Critical($"Bytes=[{string.Join(",", requestBytes)}]");
 
                     // Sends the request
-                    socket.SendPacket(Encoding.UTF8.GetBytes(request.ToString()));
+                    socket.SendPacket(requestBytes);
 
                     log.Debug("Waiting for response");
 
@@ -90,7 +106,7 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                     if (resp.ContainsKey("except"))
                     {
                         // Handles the fatal error
-                        this.HandleFatalError((string)resp["except"]);
+                        this.HandleFatalError((string)resp["except"],log);
                         return;
                     }
                     
@@ -128,8 +144,9 @@ namespace Pl_Covid_19_Anmeldung.connection.requests
                     this.OnErrorIO?.Invoke();
                 else
                 {
-                    log.Debug("Unknown error occurred while performing the request");
-                    log.Critical(e.Message);
+                    log
+                        .Debug("Unknown error occurred while performing the request")
+                        .Critical(e.Message);
 
                     // Unknown error
                     this.OnNonsenseError?.Invoke(NonsensicalError.UNKNOWN);
