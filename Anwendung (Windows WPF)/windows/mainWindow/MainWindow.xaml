@@ -132,7 +132,7 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                             <!--Beta Slogan-->
                             <TextBlock FontSize="10" Foreground="Red" Padding="10,0" VerticalAlignment="Bottom" FontFamily="Rockwell Nova">Beta-Version</TextBlock>
-                            <Button Content="ConfigPlatzhalter" Click="OnConfigButtonClicked"/>
+                            <Button Content="Config" Click="OnConfigButtonClicked" Padding="5,2" Margin="0,0,5,1" Background="DarkRed" Foreground="WhiteSmoke" BorderBrush="AntiqueWhite" VerticalAlignment="Bottom"/>
                             <!--RFID-Disconnected-->
                             <Button Style="{StaticResource IconButton}" Click="OnRFIDButtonClicked" x:Name="ButtonErrorRFID" ToolTip="RFID-Scanner nicht verbunden, verbinden?">
                                 <Image Source="../../rsc/Icon_RFID_Error_Button.png" MaxHeight="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
