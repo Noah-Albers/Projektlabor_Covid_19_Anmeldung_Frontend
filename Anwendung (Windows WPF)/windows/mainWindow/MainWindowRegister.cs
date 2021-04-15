@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using projektlabor.noah.planmeldung.datahandling;
 using projektlabor.noah.planmeldung.Properties.langs;
-using MySql.Data.MySqlClient;
 using Pl_Covid_19_Anmeldung.connection.requests;
 using Pl_Covid_19_Anmeldung;
 
@@ -35,7 +33,6 @@ namespace projektlabor.noah.planmeldung.windows
             // Gets the inserted user
             var user = this.FormRegister.UserInput;
 
-            // TODO: Restart register user request
             Task.Run(() =>
             {
                 // Creates the login request

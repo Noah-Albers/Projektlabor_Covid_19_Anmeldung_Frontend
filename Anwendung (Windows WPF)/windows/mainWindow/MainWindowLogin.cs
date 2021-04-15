@@ -1,7 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using Pl_Covid_19_Anmeldung;
+﻿using Pl_Covid_19_Anmeldung;
 using Pl_Covid_19_Anmeldung.connection.requests;
-using Pl_Covid_19_Anmeldung.windows.requests;
 using projektlabor.noah.planmeldung.datahandling.entities;
 using projektlabor.noah.planmeldung.Properties.langs;
 using System;
