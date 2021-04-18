@@ -12,6 +12,9 @@ namespace Pl_Covid_19_Anmeldung.connection
 {
     class PLCASocket : IDisposable
     {
+        // Random generator for the nonce
+        private static readonly Random RDM_GENERATOR = new Random();
+
         // Client id to indicate that the requesting user is the covid-login
         private const int CLIENT_ID = 0;
 
@@ -84,6 +87,9 @@ namespace Pl_Covid_19_Anmeldung.connection
         {
             // Stores the received data for the aes key (Still encrypted using the rsa-key)
             byte[] aesBytes = new byte[256];
+
+            // Generates a random nonce
+            RDM_GENERATOR.NextBytes(this.nonceBytes);
 
             try
             {
